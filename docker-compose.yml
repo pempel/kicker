@@ -1,0 +1,19 @@
+version: "2"
+
+services:
+  box:
+    image: "busybox"
+    volumes:
+      - "/root/bundle"
+
+  app:
+    build: .
+    command: "bin/start"
+    environment:
+      - "BUNDLE_PATH=/root/bundle"
+    ports:
+      - "4567:4567"
+    volumes:
+      - ".:/root/proudly"
+    volumes_from:
+      - "box"

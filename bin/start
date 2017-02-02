@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+echo "Bundling gems..."
+bundle check || bundle install --jobs 4
+
+echo "Starting the app server..."
+rackup -o 0.0.0.0 -p 4567

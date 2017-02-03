@@ -1,0 +1,6 @@
+development:
+  clients:
+    default:
+      database: proudly_development
+      hosts:
+        - db:27017

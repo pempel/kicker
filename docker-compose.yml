@@ -6,11 +6,20 @@ services:
     volumes:
       - "/root/bundle"
 
+  db:
+    image: "mongo:3.2.12"
+    command: "mongod --smallfiles"
+
   app:
     build: .
     command: "bin/start"
     environment:
       - "BUNDLE_PATH=/root/bundle"
+      - "RACK_ENV=development"
+    env_file:
+      - ".env"
+    links:
+      - "db"
     ports:
       - "4567:4567"
     volumes:

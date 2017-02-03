@@ -1,6 +1,2 @@
-require "bundler"
-Bundler.require(:default)
-
-require_relative "app"
-
+require_relative "config/app"
 run ProudlyApp

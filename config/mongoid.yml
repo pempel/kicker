@@ -4,3 +4,10 @@ development:
       database: proudly_development
       hosts:
         - db:27017
+
+test:
+  clients:
+    default:
+      database: proudly_test
+      hosts:
+        - db:27017

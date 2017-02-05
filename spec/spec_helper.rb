@@ -1,8 +1,9 @@
 ENV["RACK_ENV"] = "test"
 
-require "./config/app"
+require File.expand_path("../../config/application", __FILE__)
+require File.expand_path("../../application", __FILE__)
 
-Dir["./spec/support/*.rb"].each { |f| require f }
+Dir[File.expand_path("../support/*.rb", __FILE__)].each { |f| require f }
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|

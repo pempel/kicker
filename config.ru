@@ -1,2 +1,4 @@
-require_relative "config/app"
-run ProudlyApp
+require_relative "config/application"
+require_relative "applicaiton"
+
+run Proudly

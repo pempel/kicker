@@ -6,6 +6,6 @@ Bundler.require(Sinatra::Base.environment)
 
 Mongoid.load!(File.expand_path("../mongoid.yml", __FILE__))
 
-Dir.glob("./models/*.rb").each { |f| require f }
-
-require "./app"
+Dir[File.expand_path("../../app/models/**/*.rb", __FILE__)].each do |file|
+  require file
+end

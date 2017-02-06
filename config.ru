@@ -1,4 +1,3 @@
-require_relative "config/application"
-require_relative "applicaiton"
+require File.expand_path("../config/application", __FILE__)
 
-run Proudly
+run Proudly.new

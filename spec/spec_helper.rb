@@ -1,7 +1,6 @@
 ENV["RACK_ENV"] = "test"
 
 require File.expand_path("../../config/application", __FILE__)
-require File.expand_path("../../application", __FILE__)
 
 Dir[File.expand_path("../support/*.rb", __FILE__)].each { |f| require f }
 

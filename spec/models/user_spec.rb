@@ -1,4 +1,4 @@
-RSpec.describe User do
+describe User do
   describe "#destroy" do
     it "deletes all related identities" do
       user = create(:user)

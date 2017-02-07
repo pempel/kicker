@@ -1,4 +1,4 @@
-RSpec.describe "POST /slack/events" do
+describe "POST /slack/events" do
   let(:app) do
     Proudly.new
   end

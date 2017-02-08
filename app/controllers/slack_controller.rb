@@ -1,5 +1,5 @@
 class SlackController < ApplicationController
-  post "/events" do
+  post "/slack/events" do
     hash = JSON.parse(request.body.read.to_s)
     case hash["type"]
     when "url_verification"

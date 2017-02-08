@@ -6,7 +6,7 @@ Bundler.require(Sinatra::Base.environment)
 
 Mongoid.load!(File.expand_path("../mongoid.yml", __FILE__))
 
-path = "../../app/{models,helpers,controllers}/**/*.rb"
+path = "../../app/{models,helpers,conditions,controllers}/**/*.rb"
 Dir[File.expand_path(path, __FILE__)].each { |f| require f }
 
 class Proudly
@@ -14,8 +14,10 @@ class Proudly
 
   def initialize
     @app = Rack::Builder.app do
-      map("/") { run ApplicationController }
-      map("/slack") { run SlackController }
+      use SessionsController
+      use SlackController
+      use TeamsController
+      run WelcomeController
     end
   end
 

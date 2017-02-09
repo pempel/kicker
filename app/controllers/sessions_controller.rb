@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  get "/signout" do
+  get "/signout", auth: true do
     set_current_identity(nil)
     redirect "/"
   end
@@ -23,9 +23,9 @@ class SessionsController < ApplicationController
     end
     if current_identity.present?
       if identity.user != current_identity.user
-        user = identity.user
+        identity_user_id = identity.user.id
         identity.user = current_identity.user
-        identity.save && user.destroy
+        identity.save && User.where(id: identity_user_id).delete
       end
     end
     set_current_identity(identity)

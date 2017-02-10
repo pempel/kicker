@@ -1,5 +1,11 @@
 ENV["RACK_ENV"] = "test"
 
+require "simplecov"
+
+SimpleCov.start do
+  add_filter "spec/"
+end
+
 require File.expand_path("../../config/application", __FILE__)
 
 Dir[File.expand_path("../support/**/*.rb", __FILE__)].each { |f| require f }

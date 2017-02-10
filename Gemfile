@@ -19,4 +19,5 @@ group :test do
   gem "fuubar"
   gem "rack-test"
   gem "rspec"
+  gem "simplecov", require: false
 end

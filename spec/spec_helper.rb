@@ -1,6 +1,11 @@
 ENV["RACK_ENV"] = "test"
 
 require "simplecov"
+require "coveralls"
+
+if ENV["COVERALLS_REPO_TOKEN"]
+  SimpleCov.formatter = Coveralls::SimpleCov::Formatter
+end
 
 SimpleCov.start do
   add_filter "spec/"

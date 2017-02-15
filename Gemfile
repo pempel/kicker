@@ -1,6 +1,5 @@
 source "https://rubygems.org"
 
-gem "hashie", "~> 3.4.6"
 gem "mongoid"
 gem "omniauth-slack"
 gem "rake"

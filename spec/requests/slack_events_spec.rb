@@ -1,8 +1,6 @@
-describe "POST /slack/events" do
-  let(:app) do
-    Proudly.new
-  end
+require "request_helper"
 
+describe "POST /slack/events" do
   context "when the event is \"url_verification\"" do
     before do
       post "/slack/events", {type: "url_verification", challenge: "challenge-1"}.to_json, {"CONTENT_TYPE" => "application/json"}

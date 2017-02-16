@@ -9,13 +9,21 @@ class Identity
   field :last_name, type: String
 
   belongs_to :user
-  has_many :feeds
+  has_many :feeds, autosave: true, dependent: :destroy
 
   validates :uid, presence: true
   validates :tid, presence: true
   validates :nickname, presence: true
 
+  after_initialize :build_feed, if: :new_record?
+
   def feed
-    feeds.where(year: Date.today.year).first
+    feeds.to_a.find { |f| f.year == Date.today.year }
+  end
+
+  private
+
+  def build_feed
+    feeds.build(year: Date.today.year)
   end
 end

@@ -28,4 +28,31 @@ class SlackController < ApplicationController
       end
     end
   end
+
+  post "/slack/commands/proud_of" do
+    hash = JSON.parse(request.body.read.to_s)
+    if hash["command"] == "/proud_of"
+      tid = hash["team_id"]
+      event_triggered_by = Identity.where(tid: tid, uid: hash["user_id"]).first
+      event_triggered_by ||= Identity.new.tap do |i|
+        i.user = User.new
+        i.tid = tid
+        i.uid = hash["user_id"]
+        i.nickname = hash["user_name"]
+        i.save!
+      end
+      event = Event::PointsEarned.new(triggered_by: event_triggered_by)
+      uid, nickname = hash["text"].scan(/<@([^|]*)\|([^>]*)>/).last.to_a
+      identity = Identity.where(tid: tid, uid: uid, nickname: nickname).first
+      identity ||= Identity.new.tap do |i|
+        i.user = User.new
+        i.tid = tid
+        i.uid = uid
+        i.nickname = nickname
+        i.save!
+      end
+      identity.feed.events << event
+      body ""
+    end
+  end
 end

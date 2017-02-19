@@ -34,22 +34,22 @@ class SlackController < ApplicationController
     if hash["command"] == "/proud_of"
       tid = hash["team_id"]
       event_triggered_by = Identity.where(tid: tid, uid: hash["user_id"]).first
-      event_triggered_by ||= Identity.new.tap do |i|
-        i.user = User.new
-        i.tid = tid
-        i.uid = hash["user_id"]
-        i.nickname = hash["user_name"]
-        i.save!
+      event_triggered_by ||= Identity.new.tap do |identity|
+        identity.user = User.new
+        identity.tid = tid
+        identity.uid = hash["user_id"]
+        identity.nickname = hash["user_name"]
+        identity.save!
       end
       event = Event::PointsEarned.new(triggered_by: event_triggered_by)
       uid, nickname = hash["text"].scan(/<@([^|]*)\|([^>]*)>/).last.to_a
       identity = Identity.where(tid: tid, uid: uid, nickname: nickname).first
-      identity ||= Identity.new.tap do |i|
-        i.user = User.new
-        i.tid = tid
-        i.uid = uid
-        i.nickname = nickname
-        i.save!
+      identity ||= Identity.new.tap do |identity|
+        identity.user = User.new
+        identity.tid = tid
+        identity.uid = uid
+        identity.nickname = nickname
+        identity.save!
       end
       identity.feed.events << event
       body ""

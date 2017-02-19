@@ -21,6 +21,10 @@ class Identity
     feeds.to_a.find { |f| f.year == Date.today.year }
   end
 
+  def name
+    [first_name, last_name].join(" ").strip
+  end
+
   private
 
   def build_feed

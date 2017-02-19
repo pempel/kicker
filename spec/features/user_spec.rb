@@ -10,58 +10,58 @@ feature "User" do
   end
 
   scenario "visits the team page after she has signed in successfully" do
-    identity = create(:identity, uid: "i1", nickname: "jane-doe")
+    create(:identity, uid: "U1", nickname: "jane")
 
-    mock_slack_auth_hash(uid: "i1") do
+    mock_slack_auth_hash(uid: "U1") do
       visit "/team"
     end
     visit "/team"
 
     expect(page).to have_current_path("/team")
     expect(page).to have_text("Team Page")
-    expect(page).to have_text("jane-doe")
+    expect(page).to have_text("jane")
   end
 
   scenario "signs in with different accounts" do
     user = create(:user)
-    create(:identity, user: user, uid: "i1", nickname: "jane-doe-1")
-    create(:identity, user: user, uid: "i2", nickname: "jane-doe-2")
+    user.identities << create(:identity, uid: "U1", nickname: "jane")
+    user.identities << create(:identity, uid: "U2", nickname: "june")
 
-    mock_slack_auth_hash(uid: "i1") do
+    mock_slack_auth_hash(uid: "U1") do
       visit "/team"
     end
 
     expect(page).to have_current_path("/team")
-    expect(page).to have_text("jane-doe-1")
+    expect(page).to have_text("jane")
 
     visit "/signout"
 
     expect(page).to have_current_path("/")
     expect(page).to have_text("Welcome Page")
 
-    mock_slack_auth_hash(uid: "i2") do
+    mock_slack_auth_hash(uid: "U2") do
       visit "/team"
     end
 
     expect(page).to have_current_path("/team")
-    expect(page).to have_text("jane-doe-2")
+    expect(page).to have_text("june")
   end
 
   scenario "merges one account with another" do
-    identity = create(:identity, uid: "i1", nickname: "jane-doe-1")
-    identity_user_id = identity.user.id
+    jane = create(:identity, uid: "U1", nickname: "jane")
+    jane_user_id = jane.user.id.to_s
 
-    mock_slack_auth_hash(uid: "i1") do
+    mock_slack_auth_hash(uid: "U1") do
       visit "/team"
     end
-    mock_slack_auth_hash(uid: "i2", nickname: "jane-doe-2") do
+    mock_slack_auth_hash(uid: "U2", nickname: "june") do
       visit "/signin"
     end
 
     expect(page).to have_current_path("/team")
-    expect(page).to have_text("jane-doe-2")
+    expect(page).to have_text("june")
     expect(User.count).to eq(1)
-    expect(User.first.id.to_s).to eq(identity_user_id.to_s)
-    expect(User.first.identities.map(&:uid)).to contain_exactly("i1", "i2")
+    expect(User.first.id.to_s).to eq(jane_user_id.to_s)
+    expect(User.first.identities.map(&:uid)).to contain_exactly("U1", "U2")
   end
 end

@@ -44,4 +44,38 @@ describe Identity do
       expect{identity.destroy}.to change(Feed, :count).from(3).to(0)
     end
   end
+
+  describe "#name" do
+    context "when the first name and the last name are not blank" do
+      it "returns the name" do
+        identity = build(:identity, first_name: "First", last_name: "Last")
+
+        expect(identity.name).to eq("First Last")
+      end
+    end
+
+    context "when the first name and the last name are blank" do
+      it "returns the name" do
+        identity = build(:identity, first_name: nil, last_name: nil)
+
+        expect(identity.name).to eq("")
+      end
+    end
+
+    context "when the first name is blank" do
+      it "returns the name" do
+        identity = build(:identity, first_name: nil, last_name: "Last")
+
+        expect(identity.name).to eq("Last")
+      end
+    end
+
+    context "when the last name is blank" do
+      it "returns the name" do
+        identity = build(:identity, first_name: "First", last_name: nil)
+
+        expect(identity.name).to eq("First")
+      end
+    end
+  end
 end

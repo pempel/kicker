@@ -1,5 +1,19 @@
 h1 Team Page
+
+p #{current_identity.nickname}
+
 a[href="/signin"] Merge with another account
 a[href="/signout"] Sign out
 
-p Current identity: #{current_identity.first_name} | #{current_identity.last_name} | #{current_identity.nickname}
+table
+  thead
+    tr
+      th Points
+      th Nickname
+      th Name
+  tbody
+    - @members.each do |member|
+      tr
+        td = member.points
+        td = member.nickname
+        td = member.name

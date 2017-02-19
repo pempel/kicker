@@ -6,7 +6,8 @@ Bundler.require(Sinatra::Base.environment)
 
 Mongoid.load!(File.expand_path("../mongoid.yml", __FILE__))
 
-path = "../../app/{validators,models,helpers,conditions,controllers}/**/*.rb"
+entities = "{validators,models,presenters,helpers,conditions,controllers}"
+path = "../../app/#{entities}/**/*.rb"
 Dir[File.expand_path(path, __FILE__)].each { |f| require f }
 
 class Proudly

@@ -1,2 +1,11 @@
-h1 Welcome Page
-a[href="/team"] Team
+.jumbotron
+  .container
+    .row
+      .col-md-8.col-md-offset-2
+        h1 Proudly
+        p I am so proud_of you.
+        p
+          - if current_identity.blank?
+            a.btn.btn-primary href="/signin" Sign in
+          - else
+            a.btn.btn-primary href="/team" Take pride

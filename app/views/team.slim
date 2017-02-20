@@ -1,19 +1,24 @@
-h1 Team Page
+.jumbotron
+  .container
+    .row
+      .col-md-8.col-md-offset-2
+        h1 Proudly
+        p I am so proud_of you, #{current_identity.nickname}.
+        p
+          a.btn.btn-primary href="/signout" Sign out
 
-p #{current_identity.nickname}
-
-a[href="/signin"] Merge with another account
-a[href="/signout"] Sign out
-
-table
-  thead
-    tr
-      th Points
-      th Nickname
-      th Name
-  tbody
-    - @members.each do |member|
-      tr
-        td = member.points
-        td = member.nickname
-        td = member.name
+.container
+  .row
+    .col-md-8.col-md-offset-2
+      table.table.table-hover
+        thead
+          tr
+            th Points
+            th Nickname
+            th Name
+        tbody
+          - @report.members.each do |member|
+            tr
+              td = member.points
+              td = member.nickname
+              td = member.name

@@ -11,3 +11,8 @@ test:
       database: proudly_test
       hosts:
         - db:27017
+
+production:
+  clients:
+    default:
+      uri: <%= ENV["DATABASE_URL"] %>

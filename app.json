@@ -1,0 +1,31 @@
+{
+  "name": "Proudly",
+  "description": "It is a new way to take pride in your work.",
+  "repository": "https://github.com/pempel/proudly",
+  "buildpacks": [
+    {
+      "url": "heroku/ruby"
+    }
+  ],
+  "addons": [],
+  "formation": {
+    "web": {
+      "size": "free"
+    }
+  },
+  "env": {
+    "DATABASE_URL": {
+      "description": "The credentials to access your database."
+    },
+    "RACK_ENV": {
+      "description": "The current environment.",
+      "value": "production"
+    },
+    "SLACK_CLIENT_ID": {
+      "description": "Your Slack App's Client ID."
+    },
+    "SLACK_CLIENT_SECRET": {
+      "description": "Your Slack App's Client Secret."
+    }
+  }
+}

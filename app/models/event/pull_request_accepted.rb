@@ -1,4 +1,2 @@
-module Event
-  class PullRequestAccepted < Base
-  end
+class Event::PullRequestAccepted < Event::Base
 end

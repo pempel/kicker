@@ -1,8 +1,6 @@
-module Event
-  class Base
-    include Mongoid::Document
-    include Mongoid::Timestamps
+class Event::Base
+  include Mongoid::Document
+  include Mongoid::Timestamps
 
-    embedded_in :eventable, polymorphic: true
-  end
+  embedded_in :eventable, polymorphic: true
 end

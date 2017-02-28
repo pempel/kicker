@@ -41,7 +41,7 @@ class SlackController < ApplicationController
         identity.nickname = hash["user_name"]
         identity.save!
       end
-      event = Event::PointsEarned.new(triggered_by: event_triggered_by)
+      event = Event::WorkRecognized.new(triggered_by: event_triggered_by)
       uid, nickname = hash["text"].scan(/<@([^|]*)\|([^>]*)>/).last.to_a
       identity = Identity.where(tid: tid, uid: uid, nickname: nickname).first
       identity ||= Identity.new.tap do |identity|

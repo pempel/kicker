@@ -31,8 +31,8 @@ describe "POST /slack/commands/proud_of" do
 
       let!(:jane) do
         jane = create(:identity, tid: "T1", uid: "U2", nickname: "jane")
-        jane.feed.events << build(:points_earned, points: 2)
-        jane.feed.events << build(:points_earned, points: 2)
+        jane.feed.events << build(:work_recognized, points: 2)
+        jane.feed.events << build(:work_recognized, points: 2)
         jane
       end
 
@@ -52,7 +52,7 @@ describe "POST /slack/commands/proud_of" do
         identity = Identity.where(tid: "T1", uid: "U2").first
         events = identity.feed.events
         expect(events.size).to eq(3)
-        expect(events.last).to be_an_instance_of(Event::PointsEarned)
+        expect(events.last).to be_an_instance_of(Event::WorkRecognized)
         expect(events.last.points).to eq(1)
         expect(events.last.created_at).to eq(now)
       end
@@ -87,7 +87,7 @@ describe "POST /slack/commands/proud_of" do
         identity = Identity.where(tid: "T1", uid: "U2").first
         events = identity.feed.events
         expect(events.size).to eq(1)
-        expect(events.last).to be_an_instance_of(Event::PointsEarned)
+        expect(events.last).to be_an_instance_of(Event::WorkRecognized)
         expect(events.last.points).to eq(1)
         expect(events.last.created_at).to eq(now)
       end
@@ -96,7 +96,7 @@ describe "POST /slack/commands/proud_of" do
     context "when the non-existing user is proud of another existing user" do
       let!(:jane) do
         jane = create(:identity, tid: "T1", uid: "U2", nickname: "jane")
-        jane.feed.events << build(:points_earned, points: 2)
+        jane.feed.events << build(:work_recognized, points: 2)
         jane
       end
 
@@ -124,7 +124,7 @@ describe "POST /slack/commands/proud_of" do
         identity = Identity.where(tid: "T1", uid: "U2").first
         events = identity.feed.events
         expect(events.size).to eq(2)
-        expect(events.last).to be_an_instance_of(Event::PointsEarned)
+        expect(events.last).to be_an_instance_of(Event::WorkRecognized)
         expect(events.last.points).to eq(1)
         expect(events.last.created_at).to eq(now)
       end

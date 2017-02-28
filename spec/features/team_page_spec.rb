@@ -4,9 +4,9 @@ feature "Team page" do
   let!(:jane) do
     build(:identity, tid: "T1", uid: "U1", nickname: "jane") do |jane|
       jane.first_name = "Jane"
-      jane.feed.events << create(:points_earned, created_at: now - 1.month)
-      jane.feed.events << create(:points_earned)
-      jane.feed.events << create(:points_earned)
+      jane.feed.events << create(:work_recognized, created_at: now - 1.month)
+      jane.feed.events << create(:work_recognized)
+      jane.feed.events << create(:work_recognized)
       jane.save!
     end
   end
@@ -15,9 +15,9 @@ feature "Team page" do
     build(:identity, tid: "T1", uid: "U2", nickname: "john").tap do |john|
       john.first_name = "John"
       john.last_name = "Doe"
-      john.feed.events << create(:points_earned)
-      john.feed.events << create(:points_earned)
-      john.feed.events << create(:points_earned)
+      john.feed.events << create(:work_recognized)
+      john.feed.events << create(:work_recognized)
+      john.feed.events << create(:work_recognized)
       john.save!
     end
   end

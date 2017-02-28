@@ -20,7 +20,7 @@ class TeamReportPresenter
   def build_member(identity)
     points = begin
       identity.feed.events
-        .where(_type: "Event::PointsEarned")
+        .where(_type: "Event::WorkRecognized")
         .where(created_at: (from..to))
         .sum(:points)
     end

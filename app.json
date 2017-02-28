@@ -1,6 +1,6 @@
 {
   "name": "Proudly",
-  "description": "A new way to take pride in your work.",
+  "description": "A flashy way to take pride in your work.",
   "repository": "https://github.com/pempel/proudly",
   "logo": "https://raw.githubusercontent.com/pempel/proudly/master/public/images/logo.png",
   "buildpacks": [

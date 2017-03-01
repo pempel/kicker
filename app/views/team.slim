@@ -1,9 +1,14 @@
 .jumbotron
   .container
     .row
-      .col-md-8.col-md-offset-2
+      .col-md-3.col-md-offset-2
         h1 Proudly
         p I am proud_of you, #{current_identity.nickname}.
+      .col-md-5
+        h1
+          == slim :"partials/star_button"
+    .row
+      .col-md-8.col-md-offset-2
         p
           a.btn.btn-primary href="/signout" Sign out
 

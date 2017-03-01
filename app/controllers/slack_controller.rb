@@ -30,19 +30,19 @@ class SlackController < ApplicationController
   end
 
   post "/slack/commands/proud_of" do
-    hash = JSON.parse(request.body.read.to_s)
-    if hash["command"] == "/proud_of"
-      tid = hash["team_id"]
-      event_triggered_by = Identity.where(tid: tid, uid: hash["user_id"]).first
+    if params["command"] == "/proud_of"
+      tid = params["team_id"]
+      uid = params["user_id"]
+      event_triggered_by = Identity.where(tid: tid, uid: uid).first
       event_triggered_by ||= Identity.new.tap do |identity|
         identity.user = User.new
         identity.tid = tid
-        identity.uid = hash["user_id"]
-        identity.nickname = hash["user_name"]
+        identity.uid = params["user_id"]
+        identity.nickname = params["user_name"]
         identity.save!
       end
       event = Event::WorkRecognized.new(triggered_by: event_triggered_by)
-      uid, nickname = hash["text"].scan(/<@([^|]*)\|([^>]*)>/).last.to_a
+      uid, nickname = params["text"].scan(/<@([^|]*)\|([^>]*)>/).last.to_a
       identity = Identity.where(tid: tid, uid: uid, nickname: nickname).first
       identity ||= Identity.new.tap do |identity|
         identity.user = User.new
@@ -52,7 +52,7 @@ class SlackController < ApplicationController
         identity.save!
       end
       identity.feed.events << event
-      body ""
+      body "You are proud of #{nickname}."
     end
   end
 end

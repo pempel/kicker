@@ -3,7 +3,7 @@ require "request_helper"
 describe "POST /slack/commands/proud_of" do
   context "when the request is the verification of the SSL certificate" do
     before do
-      post "/slack/commands/proud_of", {ssl_check: 1}.to_json, {"CONTENT_TYPE" => "application/json"}
+      post "/slack/commands/proud_of", {ssl_check: 1}
     end
 
     it "responds with the 200 status code" do
@@ -37,15 +37,15 @@ describe "POST /slack/commands/proud_of" do
       end
 
       before do
-        post "/slack/commands/proud_of", {team_id: "T1", user_id: "U1", user_name: "john", command: "/proud_of", text: "some unnecessary text <@U2|jane> and maybe more text"}.to_json, {"CONTENT_TYPE" => "application/json"}
+        post "/slack/commands/proud_of", {team_id: "T1", user_id: "U1", user_name: "john", command: "/proud_of", text: "some unnecessary text <@U2|jane> and maybe more text"}
       end
 
       it "responds with the 200 status code" do
         expect(last_response.status).to eq(200)
       end
 
-      it "responds with the empty body" do
-        expect(last_response.body).to eq("")
+      it "responds with the correct text" do
+        expect(last_response.body).to eq("You are proud of jane.")
       end
 
       it "creates the correct event for the another user" do
@@ -64,15 +64,15 @@ describe "POST /slack/commands/proud_of" do
       end
 
       before do
-        post "/slack/commands/proud_of", {team_id: "T1", user_id: "U1", user_name: "john", command: "/proud_of", text: "some unnecessary text <@U2|jane> and maybe more text"}.to_json, {"CONTENT_TYPE" => "application/json"}
+        post "/slack/commands/proud_of", {team_id: "T1", user_id: "U1", user_name: "john", command: "/proud_of", text: "some unnecessary text <@U2|jane> and maybe more text"}
       end
 
       it "responds with the 200 status code" do
         expect(last_response.status).to eq(200)
       end
 
-      it "responds with the empty body" do
-        expect(last_response.body).to eq("")
+      it "responds with the correct text" do
+        expect(last_response.body).to eq("You are proud of jane.")
       end
 
       it "creates the another user" do
@@ -101,15 +101,15 @@ describe "POST /slack/commands/proud_of" do
       end
 
       before do
-        post "/slack/commands/proud_of", {team_id: "T1", user_id: "U1", user_name: "john", command: "/proud_of", text: "some unnecessary text <@U2|jane> and maybe more text"}.to_json, {"CONTENT_TYPE" => "application/json"}
+        post "/slack/commands/proud_of", {team_id: "T1", user_id: "U1", user_name: "john", command: "/proud_of", text: "some unnecessary text <@U2|jane> and maybe more text"}
       end
 
       it "responds with the 200 status code" do
         expect(last_response.status).to eq(200)
       end
 
-      it "responds with the empty body" do
-        expect(last_response.body).to eq("")
+      it "responds with the correct text" do
+        expect(last_response.body).to eq("You are proud of jane.")
       end
 
       it "creates the user" do

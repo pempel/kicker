@@ -1,6 +1,14 @@
 require "feature_helper"
 
 feature "Team page" do
+  let(:now) do
+    Time.parse("2017-02-26 10:15")
+  end
+
+  before do
+    travel_to(now)
+  end
+
   let!(:jane) do
     build(:identity, tid: "T1", uid: "U1", nickname: "jane") do |jane|
       jane.first_name = "Jane"
@@ -28,14 +36,6 @@ feature "Team page" do
 
   let!(:june) do
     create(:identity, tid: "T2", uid: "U4", nickname: "june")
-  end
-
-  let(:now) do
-    Time.parse("2017-02-26 10:15")
-  end
-
-  before do
-    travel_to(now)
   end
 
   scenario "contains a table of team members with points" do

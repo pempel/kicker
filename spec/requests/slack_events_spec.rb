@@ -27,7 +27,7 @@ describe "POST /slack/events" do
       end
 
       before do
-        post "/slack/events", {type: "event_callback", event: {type: "user_change", user: {id: "123", name: "new-nickname", profile: {first_name: "New First Name", last_name: "New Last Name"}}}}.to_json, {"CONTENT_TYPE" => "application/json"}
+        post "/slack/events", {type: "event_callback", event: {type: "user_change", user: {id: "123", name: "new-nickname", profile: {first_name: "New First Name", last_name: ""}}}}.to_json, {"CONTENT_TYPE" => "application/json"}
       end
 
       it "responds with the 200 status code" do
@@ -47,7 +47,7 @@ describe "POST /slack/events" do
       end
 
       it "assigns the new last name to the identity#last_name" do
-        expect(identity.reload.last_name).to eq("New Last Name")
+        expect(identity.reload.last_name).to eq("")
       end
     end
   end

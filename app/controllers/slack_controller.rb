@@ -20,9 +20,9 @@ class SlackController < ApplicationController
       if event_type == "user_change"
         identity = Identity.where(uid: uid).first
         if identity.present?
-          identity.nickname = nickname if nickname.present?
-          identity.first_name = first_name if first_name.present?
-          identity.last_name = last_name if last_name.present?
+          identity.nickname = nickname
+          identity.first_name = first_name
+          identity.last_name = last_name
           identity.save!
         end
       end

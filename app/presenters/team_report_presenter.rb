@@ -27,7 +27,7 @@ class TeamReportPresenter
     OpenStruct.new.tap do |member|
       member.points = points
       member.nickname = identity.nickname
-      member.name = identity.name
+      member.name = identity.name.present? ? identity.name : "&mdash;".html_safe
     end
   end
 end

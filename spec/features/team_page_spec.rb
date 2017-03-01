@@ -46,7 +46,7 @@ feature "Team page" do
     expect(page.all("table tbody td").map(&:text)).to eq([
       "3", "john", "John Doe",
       "2", "jane", "Jane",
-      "0", "jack", ""
+      "0", "jack", "\u2014"
     ])
   end
 end

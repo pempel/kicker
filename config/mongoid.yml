@@ -12,6 +12,13 @@ test:
       hosts:
         - db:27017
 
+fake:
+  clients:
+    default:
+      database: proudly_fake
+      hosts:
+        - db:27017
+
 production:
   clients:
     default:

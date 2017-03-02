@@ -5,7 +5,12 @@ class SessionsController < ApplicationController
   end
 
   get "/signin" do
-    redirect "/auth/slack"
+    if settings.current_identity_mock.present?
+      set_current_identity(settings.current_identity_mock)
+      redirect "/team"
+    else
+      redirect "/auth/slack"
+    end
   end
 
   get "/auth/slack/callback" do

@@ -2,7 +2,7 @@ class Identity
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  belongs_to :user
+  belongs_to :user, autobuild: true
   has_many :feeds, autosave: true, dependent: :destroy
 
   field :uid, type: String

@@ -13,7 +13,15 @@ class ApplicationController < Sinatra::Base
     provider :slack, client_id, client_secret, scope: "commands,users:read"
   end
 
+  configure do
+    set :current_identity_mock, nil
+  end
+
   configure :development do
     register Sinatra::Reloader
+  end
+
+  configure :fake do
+    set :current_identity_mock, Identity.where(tid: "T1", uid: "U1").first
   end
 end

@@ -6,7 +6,7 @@ gem "mongoid"
 gem "omniauth-slack"
 gem "rake"
 gem "sinatra"
-gem "sinatra-contrib"
+gem "sinatra-contrib", require: false
 gem "slim"
 
 group :development do

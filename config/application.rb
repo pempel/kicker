@@ -1,5 +1,7 @@
 require "bundler/setup"
 require "mongoid"
+require "sinatra/base"
+require "sinatra/reloader"
 
 Bundler.require(:default)
 Bundler.require(Sinatra::Base.environment)
@@ -12,6 +14,8 @@ paths = [
   "app/models/event/base.rb",
   "app/models/**/*.rb",
   "app/presenters/**/*.rb",
+  "app/services/application_service.rb",
+  "app/services/**/*.rb",
   "app/helpers/**/*.rb",
   "app/conditions/**/*.rb",
   "app/controllers/application_controller.rb",

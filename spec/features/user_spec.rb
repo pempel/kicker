@@ -17,7 +17,7 @@ feature "User" do
     end
     visit "/team"
 
-    expect(page).to have_current_path("/team")
+    expect(page).to have_current_path("/team?year=#{Time.now.year}")
     expect(page).to have_text("I am proud_of you, jane")
   end
 
@@ -30,7 +30,7 @@ feature "User" do
       visit "/team"
     end
 
-    expect(page).to have_current_path("/team")
+    expect(page).to have_current_path("/team?year=#{Time.now.year}")
     expect(page).to have_text("I am proud_of you, jane")
 
     visit "/signout"
@@ -42,7 +42,7 @@ feature "User" do
       visit "/team"
     end
 
-    expect(page).to have_current_path("/team")
+    expect(page).to have_current_path("/team?year=#{Time.now.year}")
     expect(page).to have_text("I am proud_of you, june")
   end
 
@@ -57,7 +57,7 @@ feature "User" do
       visit "/signin"
     end
 
-    expect(page).to have_current_path("/team")
+    expect(page).to have_current_path("/team?year=#{Time.now.year}")
     expect(page).to have_text("I am proud_of you, june")
     expect(User.count).to eq(1)
     expect(User.first.id.to_s).to eq(jane_user_id.to_s)

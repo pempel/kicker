@@ -40,7 +40,7 @@ feature "Team page" do
 
   scenario "contains a table of team members with points" do
     mock_slack_auth_hash(uid: "U1") do
-      visit "/team"
+      visit "/team?year=2017&month=2"
     end
 
     expect(page.all("table tbody td").map(&:text)).to eq([

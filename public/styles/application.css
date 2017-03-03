@@ -1,0 +1,21 @@
+.nav > li.disabled > a,
+.nav > li.disabled > a:hover {
+  color: #cccccc;
+}
+
+.nav > li.disabled > a:hover {
+  cursor: default;
+}
+
+.dropdown-menu > li.disabled > a,
+.dropdown-menu > li.disabled > a:hover {
+  color: #cccccc;
+}
+
+.dropdown-menu > li.disabled > a:hover {
+  cursor: default;
+}
+
+.timeline {
+  margin-bottom: 30px;
+}

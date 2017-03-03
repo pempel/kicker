@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
   get "/signin" do
     if settings.current_identity_mock.present?
       set_current_identity(settings.current_identity_mock)
-      redirect "/team"
+      redirect team_path
     else
       redirect "/auth/slack"
     end
@@ -34,6 +34,6 @@ class SessionsController < ApplicationController
       end
     end
     set_current_identity(identity)
-    redirect "/team"
+    redirect previous_path || team_path
   end
 end

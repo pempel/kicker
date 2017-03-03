@@ -1,31 +1,75 @@
 class TeamReportPresenter
-  attr_reader :tid, :from, :to
-
-  def initialize(tid:, from: nil, to: nil)
+  def initialize(tid)
     @tid = tid.to_s
-    @from = from || Time.now.beginning_of_month
-    @to = to || Time.now.end_of_month
   end
 
-  def members
-    @members ||= build_members.sort_by(&:points).reverse
+  def label(year, month = nil)
+    Time.new(year, month).strftime(month.present? ? "%b" : "%Y") rescue year
+  end
+
+  def years
+    active_years.first.downto(active_years.last).to_a
+  end
+
+  def months
+    (1..12).to_a
+  end
+
+  def active_years
+    timeline.map(&:year)
+  end
+
+  def active_months(year)
+    timeline.find { |t| t.year == year }.try(:months) || []
+  end
+
+  def members(year, month = nil)
+    identities.map { |i| member(i, year, month) }.sort_by(&:points).reverse
   end
 
   private
 
-  def build_members
-    Identity.where(tid: tid).all.map { |i| build_member(i) }
+  attr_reader :tid
+
+  def identities
+    @_identities ||= Identity.where(tid: tid).all
   end
 
-  def build_member(identity)
-    points = begin
-      identity.feed.events
-        .where(_type: "Event::WorkRecognized")
-        .where(created_at: (from..to))
-        .sum(:points)
+  def timeline
+    @_timeline ||= begin
+      timeline = Hash.new.tap do |hash|
+        identities.each do |identity|
+          identity.feeds.each do |feed|
+            feed.events.pluck(:created_at).each do |time|
+              year, month = time.year, time.month
+              hash[year] = hash.fetch(year, SortedSet.new).add(month)
+            end
+          end
+        end
+        now = Time.now
+        year, month = now.year, now.month
+        hash[year] = hash.fetch(year, SortedSet.new).add(month)
+      end
+      timeline.sort.reverse.map do |year, months|
+        OpenStruct.new(year: year, months: months)
+      end
     end
+  end
+
+  def member(identity, year, month = nil)
     OpenStruct.new.tap do |member|
-      member.points = points
+      member.points = begin
+        time_range = ParseTimeRange.call(year, month)
+        feed = identity.feeds.where(year: year).first
+        if feed.blank?
+          0
+        else
+          feed.events
+            .where(_type: "Event::WorkRecognized")
+            .where(created_at: time_range)
+            .sum(:points)
+        end
+      end
       member.nickname = identity.nickname
       member.name = identity.name.present? ? identity.name : "&mdash;".html_safe
     end

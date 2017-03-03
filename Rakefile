@@ -40,14 +40,14 @@ namespace :db do
     populate(Time.now.year, identities)
   end
 
-  desc "Populate the database with sample data for the last three years"
-  task populate_for_last_three_years: :environment do
+  desc "Populate the database with sample data for the last five years"
+  task populate_for_last_five_years: :environment do
     Rake::Task["db:drop"].invoke
 
     require "active_support/testing/time_helpers"
     include ActiveSupport::Testing::TimeHelpers
 
-    years = (2.years.ago.year..0.years.ago.year).to_a
+    years = (4.years.ago.year..0.years.ago.year).to_a
 
     identities = travel_to(Time.new(years.first)) do
       %w[john jack jane].map.with_index(1) do |nickname, i|
@@ -55,15 +55,17 @@ namespace :db do
       end
     end
 
-    years.select.with_index { |_, i| i.even? }.each do |year|
+    years.slice(0..-3).each do |year|
       populate(year, identities)
     end
   end
 
   def populate(year, identities)
     rand(2..4).times do
+      month = (year == Time.now.year) ? rand(1..Time.now.month) : rand(1..12)
+      time = Time.new(year, month, Time.now.day, Time.now.hour)
+
       i1, i2 = identities.sample(2)
-      time = Time.new(year, rand(1..12), Time.now.day, Time.now.hour)
 
       rand(0..4).times do
         Identity::CaptureEvent.call(i1, triggered_by: i2, triggered_at: time)

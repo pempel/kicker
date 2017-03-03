@@ -1,20 +1,52 @@
 .jumbotron
   .container
     .row
-      .col-md-3.col-md-offset-2
+      .col-md-3.col-md-offset-1
         h1 Proudly
         p I am proud_of you, #{current_identity.nickname}.
-      .col-md-5
+      .col-md-7
         h1
           == slim :"partials/star_button"
     .row
-      .col-md-8.col-md-offset-2
+      .col-md-10.col-md-offset-1
         p
           a.btn.btn-primary href="/signout" Sign out
 
 .container
   .row
-    .col-md-8.col-md-offset-2
+    .col-md-10.col-md-offset-1
+      ul.nav.nav-pills.timeline
+        - if @report.years.size == 1
+          li.active
+            - year = @report.years.first
+            - path = team_path(year: year)
+            a href=(path) = @report.label(year)
+        - else
+          li.active.dropdown
+            a.dropdown-toggle#year-toggle(
+              data-toggle="dropdown"
+              role="button"
+              aria-haspopup="true"
+              aria-expanded="false"
+            )
+              = "#{@report.label(@year)} "
+              span.caret
+            ul.dropdown-menu aria-labelledby="year-toggle"
+              - @report.years.each do |year|
+                - disabled = @report.active_years.exclude?(year)
+                - path = team_path(year: year)
+                li class=("disabled" if disabled)
+                  a href=(path unless disabled) = @report.label(year)
+
+        - @report.months.each do |month|
+          - disabled = @report.active_months(@year).exclude?(month)
+          - path = team_path(year: @year, month: month)
+          li(
+            class=("disabled" if disabled)
+            class=("active" if current_path == path)
+          )
+            a href=(path) = @report.label(@year, month)
+
       table.table.table-hover
         thead
           tr
@@ -22,7 +54,7 @@
             th Nickname
             th Name
         tbody
-          - @report.members.each do |member|
+          - @report.members(@year, @month).each do |member|
             tr
               td = member.points
               td = member.nickname

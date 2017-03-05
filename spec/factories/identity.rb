@@ -1,8 +1,7 @@
 FactoryGirl.define do
   factory :identity do
-    association :user, strategy: :build
-    sequence(:uid) { |n| "u#{n}" }
-    sequence(:tid) { |n| "t#{n}" }
+    association :team, strategy: :build
+    sequence(:slack_id) { |n| "U#{n}" }
     nickname "nickname"
   end
 end

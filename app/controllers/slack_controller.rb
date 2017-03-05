@@ -12,13 +12,13 @@ class SlackController < ApplicationController
       user_hash = event_hash.fetch("user", {})
       user_profile_hash = user_hash.fetch("profile", {})
 
-      uid = user_hash["id"]
+      slack_id = user_hash["id"]
       nickname = user_hash["name"]
       first_name = user_profile_hash["first_name"]
       last_name = user_profile_hash["last_name"]
 
       if event_type == "user_change"
-        identity = Identity.where(uid: uid).first
+        identity = Identity.where(slack_id: slack_id).first
         if identity.present?
           identity.nickname = nickname
           identity.first_name = first_name
@@ -33,21 +33,23 @@ class SlackController < ApplicationController
     if params["command"] == "/proud_of"
       tid = params["team_id"]
       uid = params["user_id"]
-      event_triggered_by = Identity.where(tid: tid, uid: uid).first
+      event_triggered_by = Identity.where(slack_id: uid).first
       event_triggered_by ||= Identity.new.tap do |identity|
+        identity.team = Team.where(slack_id: tid).first
+        identity.team ||= Team.new(slack_id: tid)
         identity.user = User.new
-        identity.tid = tid
-        identity.uid = params["user_id"]
+        identity.slack_id = params["user_id"]
         identity.nickname = params["user_name"]
         identity.save!
       end
       event = Event::WorkRecognized.new(triggered_by: event_triggered_by)
       uid, nickname = params["text"].scan(/<@([^|]*)\|([^>]*)>/).last.to_a
-      identity = Identity.where(tid: tid, uid: uid, nickname: nickname).first
+      identity = Identity.where(slack_id: uid, nickname: nickname).first
       identity ||= Identity.new.tap do |identity|
+        identity.team = Team.where(slack_id: tid).first
+        identity.team ||= Team.new(slack_id: tid)
         identity.user = User.new
-        identity.tid = tid
-        identity.uid = uid
+        identity.slack_id = uid
         identity.nickname = nickname
         identity.save!
       end

@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :feed do
     association :identity, strategy: :build
-    year Date.today.year
+    year Time.now.year
   end
 end

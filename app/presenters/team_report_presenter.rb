@@ -1,6 +1,6 @@
 class TeamReportPresenter
-  def initialize(tid)
-    @tid = tid.to_s
+  def initialize(team)
+    @team = team
   end
 
   def label(year, month = nil)
@@ -24,21 +24,17 @@ class TeamReportPresenter
   end
 
   def members(year, month = nil)
-    identities.map { |i| member(i, year, month) }.sort_by(&:points).reverse
+    team.identities.map { |i| member(i, year, month) }.sort_by(&:points).reverse
   end
 
   private
 
-  attr_reader :tid
-
-  def identities
-    @_identities ||= Identity.where(tid: tid).all
-  end
+  attr_reader :team
 
   def timeline
     @_timeline ||= begin
       timeline = Hash.new.tap do |hash|
-        identities.each do |identity|
+        team.identities.each do |identity|
           identity.feeds.each do |feed|
             feed.events.pluck(:created_at).each do |time|
               year, month = time.year, time.month

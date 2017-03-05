@@ -14,16 +14,16 @@ class SessionsController < ApplicationController
   end
 
   get "/auth/slack/callback" do
-    auth = request.env["omniauth.auth"]
-    identity = Identity.where(uid: auth["info"]["user_id"]).first
+    info = request.env["omniauth.auth"].to_h["info"]
+    identity = Identity.where(slack_id: info["user_id"]).first
     if identity.blank?
       identity = Identity.new
+      identity.team = Team.new(slack_id: info["team_id"], name: info["team"])
       identity.user = User.new
-      identity.uid = auth["info"]["user_id"]
-      identity.tid = auth["info"]["team_id"]
-      identity.nickname = auth["info"]["nickname"]
-      identity.first_name = auth["info"]["first_name"]
-      identity.last_name = auth["info"]["last_name"]
+      identity.slack_id = info["user_id"]
+      identity.nickname = info["nickname"]
+      identity.first_name = info["first_name"]
+      identity.last_name = info["last_name"]
       identity.save!
     end
     if current_identity.present?

@@ -22,6 +22,6 @@ class ApplicationController < Sinatra::Base
   end
 
   configure :fake do
-    set :current_identity_mock, Identity.where(tid: "T1", uid: "U1").first
+    set :current_identity_mock, Identity.where(slack_id: "U1").first
   end
 end

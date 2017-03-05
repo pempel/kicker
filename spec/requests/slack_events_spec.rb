@@ -19,7 +19,7 @@ describe "POST /slack/events" do
     context "when the event type is \"user_change\"" do
       let!(:identity) do
         create(:identity,
-          uid: "123",
+          slack_id: "123",
           nickname: "nickname",
           first_name: "First Name",
           last_name: "Last Name"

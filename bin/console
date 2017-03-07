@@ -3,6 +3,8 @@
 require File.expand_path("../../config/application", __FILE__)
 require "irb"
 
-FactoryGirl.find_definitions
+if ENV["RACK_ENV"] == "test"
+  FactoryGirl.find_definitions
+end
 
 IRB.start

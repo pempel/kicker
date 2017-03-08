@@ -33,18 +33,18 @@ class TeamReportPresenter
 
   def timeline
     @_timeline ||= begin
-      timeline = Hash.new.tap do |hash|
+      timeline = Hash.new.tap do |timeline|
         team.identities.each do |identity|
           identity.feeds.each do |feed|
             feed.events.pluck(:created_at).each do |time|
               year, month = time.year, time.month
-              hash[year] = hash.fetch(year, SortedSet.new).add(month)
+              timeline[year] = timeline.fetch(year, SortedSet.new).add(month)
             end
           end
         end
         now = Time.now
         year, month = now.year, now.month
-        hash[year] = hash.fetch(year, SortedSet.new).add(month)
+        timeline[year] = timeline.fetch(year, SortedSet.new).add(month)
       end
       timeline.sort.reverse.map do |year, months|
         OpenStruct.new(year: year, months: months)

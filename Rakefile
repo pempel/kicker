@@ -33,8 +33,9 @@ namespace :db do
   task populate_for_last_year: :environment do
     Rake::Task["db:drop"].invoke
 
+    team = Team.create!(slack_id: "T1", name: "Team 1")
     identities = %w[john jack jane].map.with_index(1) do |nickname, i|
-      Identity.create!(tid: "T1", uid: "U#{i}", nickname: nickname)
+      Identity.create!(team: team, slack_id: "U#{i}", nickname: nickname)
     end
 
     populate(Time.now.year, identities)
@@ -50,8 +51,9 @@ namespace :db do
     years = (4.years.ago.year..0.years.ago.year).to_a
 
     identities = travel_to(Time.new(years.first)) do
+      team = Team.create!(slack_id: "T1", name: "Team 1")
       %w[john jack jane].map.with_index(1) do |nickname, i|
-        Identity.create!(tid: "T1", uid: "U#{i}", nickname: nickname)
+        Identity.create!(team: team, slack_id: "U#{i}", nickname: nickname)
       end
     end
 

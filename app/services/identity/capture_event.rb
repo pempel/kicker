@@ -14,12 +14,12 @@ class Identity::CaptureEvent < ApplicationService
     end
 
     feed = identity.feeds.where(year: event_created_at.year).first
-    feed ||= Feed.new.tap do |f|
-      f.identity = identity
-      f.year = event_created_at.year
-      f.created_at = event_created_at
-      f.updated_at = event_created_at
-      f.save!
+    feed ||= Feed.new.tap do |feed|
+      feed.identity = identity
+      feed.year = event_created_at.year
+      feed.created_at = event_created_at
+      feed.updated_at = event_created_at
+      feed.save!
     end
 
     feed.events << event

@@ -1,21 +1,19 @@
 class SlackController < ApplicationController
   post "/slack/events" do
-    hash = JSON.parse(request.body.read.to_s)
-    case hash["type"]
+    case params[:type]
     when "url_verification"
       headers "Content-Type" => "application/x-www-form-urlencoded"
-      body hash["challenge"]
+      body params[:challenge]
     when "event_callback"
-      event_hash = hash.fetch("event", {})
-      event_type = event_hash["type"]
+      event_params = params.fetch(:event, {})
+      user_params = event_params.fetch(:user, {})
+      user_profile_params = user_params.fetch(:profile, {})
 
-      user_hash = event_hash.fetch("user", {})
-      user_profile_hash = user_hash.fetch("profile", {})
-
-      slack_id = user_hash["id"]
-      nickname = user_hash["name"]
-      first_name = user_profile_hash["first_name"]
-      last_name = user_profile_hash["last_name"]
+      event_type = event_params[:type]
+      slack_id = user_params[:id]
+      nickname = user_params[:name]
+      first_name = user_profile_params[:first_name]
+      last_name = user_profile_params[:last_name]
 
       if event_type == "user_change"
         identity = Identity.where(slack_id: slack_id).first
@@ -30,20 +28,20 @@ class SlackController < ApplicationController
   end
 
   post "/slack/commands/proud_of" do
-    if params["command"] == "/proud_of"
-      tid = params["team_id"]
-      uid = params["user_id"]
+    if params[:command] == "/proud_of"
+      tid = params[:team_id]
+      uid = params[:user_id]
       event_triggered_by = Identity.where(slack_id: uid).first
       event_triggered_by ||= Identity.new.tap do |identity|
         identity.team = Team.where(slack_id: tid).first
         identity.team ||= Team.new(slack_id: tid)
         identity.user = User.new
-        identity.slack_id = params["user_id"]
-        identity.nickname = params["user_name"]
+        identity.slack_id = params[:user_id]
+        identity.nickname = params[:user_name]
         identity.save!
       end
       event = Event::WorkRecognized.new(triggered_by: event_triggered_by)
-      uid, nickname = params["text"].scan(/<@([^|]*)\|([^>]*)>/).last.to_a
+      uid, nickname = params[:text].scan(/<@([^|]*)\|([^>]*)>/).last.to_a
       identity = Identity.where(slack_id: uid, nickname: nickname).first
       identity ||= Identity.new.tap do |identity|
         identity.team = Team.where(slack_id: tid).first

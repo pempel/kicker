@@ -13,6 +13,14 @@ class ApplicationController < Sinatra::Base
     provider :slack, client_id, client_secret, scope: "commands,users:read"
   end
 
+  before do
+    if request.content_type == "application/json"
+      request.body.rewind
+      @params = JSON.parse(request.body.read.to_s)
+    end
+    @params = params.deep_symbolize_keys
+  end
+
   configure do
     set :current_identity_mock, nil
   end

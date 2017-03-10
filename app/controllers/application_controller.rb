@@ -10,7 +10,7 @@ class ApplicationController < Sinatra::Base
   use OmniAuth::Builder do
     client_id = ENV["SLACK_CLIENT_ID"]
     client_secret = ENV["SLACK_CLIENT_SECRET"]
-    provider :slack, client_id, client_secret, scope: "commands,users:read"
+    provider :slack, client_id, client_secret
   end
 
   before do

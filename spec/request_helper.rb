@@ -2,7 +2,7 @@ require "spec_helper"
 
 module RequestHelpers
   def app
-    Proudly.new
+    Kicker.new
   end
 end
 

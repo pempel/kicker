@@ -26,7 +26,7 @@ paths.each do |path|
   Dir[File.expand_path("../../#{path}", __FILE__)].each { |f| require f }
 end
 
-class Proudly
+class Kicker
   attr_reader :app
 
   def initialize

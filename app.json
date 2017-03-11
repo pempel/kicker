@@ -1,8 +1,8 @@
 {
-  "name": "Proudly",
-  "description": "A flashy way to take pride in your work.",
-  "repository": "https://github.com/pempel/proudly",
-  "logo": "https://raw.githubusercontent.com/pempel/proudly/master/public/images/logo.png",
+  "name": "kicker",
+  "description": "Recognize your work and reward you for what you have done.",
+  "repository": "https://github.com/pempel/kicker",
+  "logo": "https://raw.githubusercontent.com/pempel/kicker/master/public/images/logo.png",
   "buildpacks": [
     {
       "url": "heroku/ruby"

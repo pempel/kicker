@@ -23,6 +23,6 @@ services:
     ports:
       - "4567:4567"
     volumes:
-      - ".:/root/proudly"
+      - ".:/root/kicker"
     volumes_from:
       - "box"

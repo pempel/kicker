@@ -1,22 +1,13 @@
-# Proudly
+[![Build Status](https://circleci.com/gh/pempel/kicker/tree/master.svg?style=shield)](https://circleci.com/gh/pempel/kicker/tree/master)
+[![Coverage Status](https://coveralls.io/repos/github/pempel/kicker/badge.svg)](https://coveralls.io/github/pempel/kicker)
+[![Code Climate](https://lima.codeclimate.com/github/pempel/kicker/badges/gpa.svg)](https://lima.codeclimate.com/github/pempel/kicker)
+[![Dependency Status](https://gemnasium.com/badges/github.com/pempel/kicker.svg)](https://gemnasium.com/github.com/pempel/kicker)
 
-[![Build Status](https://circleci.com/gh/pempel/proudly/tree/master.svg?style=shield)](https://circleci.com/gh/pempel/proudly/tree/master)
-[![Coverage Status](https://coveralls.io/repos/github/pempel/proudly/badge.svg)](https://coveralls.io/github/pempel/proudly)
-[![Code Climate](https://lima.codeclimate.com/github/pempel/proudly/badges/gpa.svg)](https://lima.codeclimate.com/github/pempel/proudly)
-[![Dependency Status](https://gemnasium.com/badges/github.com/pempel/proudly.svg)](https://gemnasium.com/github.com/pempel/proudly)
-
-A flashy way to take pride in your work.
-
-Proudly provides you and your co-workers with a funny way
-to recognize your work and reward you for what you have done.
-
-## Demo
-
-You can see the demo of Proudly at [https://proudly.herokuapp.com](https://proudly.herokuapp.com).
+Recognize your work and reward you for what you have done.
 
 ## Setup
 
-If you want to set up Proudly for private use, follow these steps:
+If you want to set up Kicker for private use, follow these steps:
 
 1. Press the button to create a new Heroku app:
 

@@ -1,21 +1,21 @@
 development:
   clients:
     default:
-      database: proudly_development
+      database: kicker_development
       hosts:
         - db:27017
 
 test:
   clients:
     default:
-      database: proudly_test
+      database: kicker_test
       hosts:
         - db:27017
 
 fake:
   clients:
     default:
-      database: proudly_fake
+      database: kicker_fake
       hosts:
         - db:27017
 

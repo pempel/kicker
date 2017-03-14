@@ -10,13 +10,13 @@ describe Team do
   end
 
   describe "#destroy" do
-    it "destroys all related identities" do
+    it "destroys all related users" do
       team = create(:team)
-      create_list(:identity, 2, team: team)
+      create_list(:user, 2, team: team)
 
       team.destroy
 
-      expect(Identity.count).to eq(0)
+      expect(User.count).to eq(0)
     end
   end
 end

@@ -5,7 +5,7 @@
         h1 kicker
         p Keep calm and carry on.
         p
-          - if current_identity.blank?
+          - if current_user.blank?
             a.btn.btn-primary href="/signin" Sign in with Slack
           - else
             a.btn.btn-primary href=(team_path) Carry on

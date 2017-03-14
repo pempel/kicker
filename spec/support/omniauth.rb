@@ -1,6 +1,6 @@
 module OmniAuthHelpers
-  def as_slack_user(slack_id, options = {})
-    hash = options.deep_symbolize_keys.merge(uid: slack_id)
+  def as_slack_user(uid, options = {})
+    hash = options.deep_symbolize_keys.merge(uid: uid)
     OmniAuth.config.test_mode = true
     OmniAuth.config.mock_auth[:slack] = {
       "provider" => "slack",

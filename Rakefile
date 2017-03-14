@@ -33,12 +33,12 @@ namespace :db do
   task populate_for_last_year: :environment do
     Rake::Task["db:drop"].invoke
 
-    team = Team.create!(slack_id: "T1", name: "Team 1")
-    identities = %w[john jack jane].map.with_index(1) do |nickname, i|
-      Identity.create!(team: team, slack_id: "U#{i}", nickname: nickname)
+    team = Team.create!(tid: "T1", name: "Team 1")
+    users = %w[john jack jane].map.with_index(1) do |nickname, index|
+      User.create!(team: team, uid: "U#{index}", nickname: nickname)
     end
 
-    populate(Time.now.year, identities)
+    populate(Time.now.year, users)
   end
 
   desc "Populate the database with sample data for the last five years"
@@ -50,31 +50,31 @@ namespace :db do
 
     years = (4.years.ago.year..0.years.ago.year).to_a
 
-    identities = travel_to(Time.new(years.first)) do
-      team = Team.create!(slack_id: "T1", name: "Team 1")
-      %w[john jack jane].map.with_index(1) do |nickname, i|
-        Identity.create!(team: team, slack_id: "U#{i}", nickname: nickname)
+    users = travel_to(Time.new(years.first)) do
+      team = Team.create!(tid: "T1", name: "Team 1")
+      %w[john jack jane].map.with_index(1) do |nickname, index|
+        User.create!(team: team, uid: "U#{index}", nickname: nickname)
       end
     end
 
     years.slice(0..-3).each do |year|
-      populate(year, identities)
+      populate(year, users)
     end
   end
 
-  def populate(year, identities)
+  def populate(year, users)
     rand(2..4).times do
       month = (year == Time.now.year) ? rand(1..Time.now.month) : rand(1..12)
       time = Time.new(year, month, Time.now.day, Time.now.hour)
 
-      i1, i2 = identities.sample(2)
+      u1, u2 = users.sample(2)
 
       rand(0..4).times do
-        Identity::CaptureEvent.call(i1, triggered_by: i2, triggered_at: time)
+        User::CaptureEvent.call(u1, triggered_by: u2, triggered_at: time)
       end
 
       rand(0..2).times do
-        Identity::CaptureEvent.call(i2, triggered_by: i1, triggered_at: time)
+        User::CaptureEvent.call(u2, triggered_by: u1, triggered_at: time)
       end
     end
   end

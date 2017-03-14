@@ -10,7 +10,7 @@ feature "User" do
   end
 
   scenario "visits the team page after she has signed in successfully" do
-    create(:identity, slack_id: "U1", nickname: "jane")
+    create(:user, uid: "U1", nickname: "jane")
 
     as_slack_user("U1") { visit "/team" }
     visit "/team"
@@ -20,9 +20,9 @@ feature "User" do
   end
 
   scenario "signs in with different accounts" do
-    user = create(:user)
-    user.identities << create(:identity, slack_id: "U1", nickname: "jane")
-    user.identities << create(:identity, slack_id: "U2", nickname: "june")
+    identity = create(:identity)
+    identity.users << create(:user, uid: "U1", nickname: "jane")
+    identity.users << create(:user, uid: "U2", nickname: "june")
 
     as_slack_user("U1") { visit "/team" }
 
@@ -41,16 +41,16 @@ feature "User" do
   end
 
   scenario "merges one account with another" do
-    jane = create(:identity, slack_id: "U1", nickname: "jane")
-    jane_user_id = jane.user.id.to_s
+    jane = create(:user, uid: "U1", nickname: "jane")
+    jane_identity_id = jane.identity.id
 
     as_slack_user("U1") { visit "/team" }
     as_slack_user("U2", nickname: "june") { visit "/signin" }
 
     expect(page).to have_current_path("/team?year=#{Time.now.year}")
     expect(page).to have_text("Keep calm and carry on, june")
-    expect(User.count).to eq(1)
-    expect(User.first.id.to_s).to eq(jane_user_id.to_s)
-    expect(User.first.identities.map(&:slack_id)).to contain_exactly("U1", "U2")
+    expect(Identity.count).to eq(1)
+    expect(Identity.first.id.to_s).to eq(jane_identity_id.to_s)
+    expect(Identity.first.users.map(&:uid)).to contain_exactly("U1", "U2")
   end
 end

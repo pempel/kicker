@@ -1,6 +1,6 @@
-class Identity::CaptureEvent < ApplicationService
-  def initialize(identity, triggered_at: nil, **event_params)
-    @identity = identity
+class User::CaptureEvent < ApplicationService
+  def initialize(user, triggered_at: nil, **event_params)
+    @user = user
     @triggered_at = triggered_at
     @event_params = event_params
   end
@@ -13,9 +13,9 @@ class Identity::CaptureEvent < ApplicationService
       raise StandardError.new("ERROR")
     end
 
-    feed = identity.feeds.where(year: event_created_at.year).first
+    feed = user.feeds.where(year: event_created_at.year).first
     feed ||= Feed.new.tap do |feed|
-      feed.identity = identity
+      feed.user = user
       feed.year = event_created_at.year
       feed.created_at = event_created_at
       feed.updated_at = event_created_at
@@ -29,7 +29,7 @@ class Identity::CaptureEvent < ApplicationService
 
   private
 
-  attr_reader :identity, :triggered_at
+  attr_reader :user, :triggered_at
 
   def event_params
     @_event_params ||= begin

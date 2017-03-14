@@ -6,7 +6,7 @@ class TeamsController < ApplicationController
     else
       @year = year
       @month = month
-      @report = TeamReportPresenter.new(current_identity.team)
+      @report = TeamReportPresenter.new(current_user.team)
       slim :team
     end
   end

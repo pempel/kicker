@@ -26,11 +26,11 @@ describe "POST /slack/commands/proud_of" do
 
     context "when the existing user is proud of another existing user" do
       let!(:john) do
-        create(:identity, slack_id: "U1", nickname: "john")
+        create(:user, uid: "U1", nickname: "john")
       end
 
       let!(:jane) do
-        build(:identity, slack_id: "U2", nickname: "jane") do |jane|
+        build(:user, uid: "U2", nickname: "jane") do |jane|
           jane.feed.events << build(:work_recognized, triggered_by: john)
           jane.feed.events << build(:work_recognized, triggered_by: john)
           jane.save!
@@ -50,8 +50,8 @@ describe "POST /slack/commands/proud_of" do
       end
 
       it "creates the correct event for the another user" do
-        identity = Identity.where(slack_id: "U2").first
-        events = identity.feed.events
+        user = User.where(uid: "U2").first
+        events = user.feed.events
         expect(events.size).to eq(3)
         expect(events.last).to be_an_instance_of(Event::WorkRecognized)
         expect(events.last.points).to eq(1)
@@ -61,8 +61,8 @@ describe "POST /slack/commands/proud_of" do
 
     context "when the existing user is proud of another non-existing user" do
       let!(:john) do
-        team = build(:team, slack_id: "T1")
-        create(:identity, team: team, slack_id: "U1", nickname: "john")
+        team = build(:team, tid: "T1")
+        create(:user, team: team, uid: "U1", nickname: "john")
       end
 
       before do
@@ -78,16 +78,16 @@ describe "POST /slack/commands/proud_of" do
       end
 
       it "creates the another user" do
-        identity = Identity.where(slack_id: "U2").first
-        expect(identity).to be_present
-        expect(identity.team.slack_id).to eq("T1")
-        expect(identity.slack_id).to eq("U2")
-        expect(identity.nickname).to eq("jane")
+        user = User.where(uid: "U2").first
+        expect(user).to be_present
+        expect(user.team.tid).to eq("T1")
+        expect(user.uid).to eq("U2")
+        expect(user.nickname).to eq("jane")
       end
 
       it "creates the correct event for the another user" do
-        identity = Identity.where(slack_id: "U2").first
-        events = identity.feed.events
+        user = User.where(uid: "U2").first
+        events = user.feed.events
         expect(events.size).to eq(1)
         expect(events.last).to be_an_instance_of(Event::WorkRecognized)
         expect(events.last.points).to eq(1)
@@ -97,8 +97,8 @@ describe "POST /slack/commands/proud_of" do
 
     context "when the non-existing user is proud of another existing user" do
       let!(:jane) do
-        team = build(:team, slack_id: "T1")
-        build(:identity, team: team, slack_id: "U2", nickname: "jane") do |jane|
+        team = build(:team, tid: "T1")
+        build(:user, team: team, uid: "U2", nickname: "jane") do |jane|
           jane.feed.events << build(:work_recognized)
           jane.save!
         end
@@ -117,16 +117,16 @@ describe "POST /slack/commands/proud_of" do
       end
 
       it "creates the user" do
-        identity = Identity.where(slack_id: "U1").first
-        expect(identity).to be_present
-        expect(identity.team.slack_id).to eq("T1")
-        expect(identity.slack_id).to eq("U1")
-        expect(identity.nickname).to eq("john")
+        user = User.where(uid: "U1").first
+        expect(user).to be_present
+        expect(user.team.tid).to eq("T1")
+        expect(user.uid).to eq("U1")
+        expect(user.nickname).to eq("john")
       end
 
       it "creates the correct event for the another user" do
-        identity = Identity.where(slack_id: "U2").first
-        events = identity.feed.events
+        user = User.where(uid: "U2").first
+        events = user.feed.events
         expect(events.size).to eq(2)
         expect(events.last).to be_an_instance_of(Event::WorkRecognized)
         expect(events.last.points).to eq(1)

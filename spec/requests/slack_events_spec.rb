@@ -17,9 +17,9 @@ describe "POST /slack/events" do
 
   context "when the event is \"event_callback\"" do
     context "when the event type is \"user_change\"" do
-      let!(:identity) do
-        create(:identity,
-          slack_id: "123",
+      let!(:user) do
+        create(:user,
+          uid: "123",
           nickname: "nickname",
           first_name: "First Name",
           last_name: "Last Name"
@@ -38,16 +38,16 @@ describe "POST /slack/events" do
         expect(last_response.body).to eq("")
       end
 
-      it "assigns the new nickname to the identity#nickname" do
-        expect(identity.reload.nickname).to eq("new-nickname")
+      it "assigns the new nickname to the user#nickname" do
+        expect(user.reload.nickname).to eq("new-nickname")
       end
 
-      it "assigns the new first name to the identity#first_name" do
-        expect(identity.reload.first_name).to eq("New First Name")
+      it "assigns the new first name to the user#first_name" do
+        expect(user.reload.first_name).to eq("New First Name")
       end
 
-      it "assigns the new last name to the identity#last_name" do
-        expect(identity.reload.last_name).to eq("")
+      it "assigns the new last name to the user#last_name" do
+        expect(user.reload.last_name).to eq("")
       end
     end
   end

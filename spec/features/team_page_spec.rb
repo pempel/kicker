@@ -10,19 +10,19 @@ feature "Team page" do
   end
 
   let!(:team_1) do
-    create(:team, slack_id: "T1")
+    create(:team, tid: "T1")
   end
 
   let!(:team_2) do
-    create(:team, slack_id: "T2")
+    create(:team, tid: "T2")
   end
 
   let!(:jack) do
-    create(:identity, team: team_1, slack_id: "U1", nickname: "jack")
+    create(:user, team: team_1, uid: "U1", nickname: "jack")
   end
 
   let!(:jane) do
-    build(:identity, team: team_1, slack_id: "U2", nickname: "jane") do |jane|
+    build(:user, team: team_1, uid: "U2", nickname: "jane") do |jane|
       jane.first_name = "Jane"
       jane.feed.events << create(:work_recognized, triggered_by: jack)
       jane.feed.events << create(:work_recognized, triggered_by: jack)
@@ -34,7 +34,7 @@ feature "Team page" do
   end
 
   let!(:john) do
-    build(:identity, team: team_1, slack_id: "U3", nickname: "john") do |john|
+    build(:user, team: team_1, uid: "U3", nickname: "john") do |john|
       john.first_name = "John"
       john.last_name = "Doe"
       john.feed.events << create(:work_recognized, triggered_by: jane)
@@ -45,7 +45,7 @@ feature "Team page" do
   end
 
   let!(:june) do
-    create(:identity, team: team_2, slack_id: "U4", nickname: "june")
+    create(:user, team: team_2, uid: "U4", nickname: "june")
   end
 
   scenario "contains a table of team members with points" do

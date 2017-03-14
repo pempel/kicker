@@ -24,7 +24,7 @@ class TeamReportPresenter
   end
 
   def members(year, month = nil)
-    team.identities.map { |i| member(i, year, month) }.sort_by(&:points).reverse
+    team.users.map { |u| member(u, year, month) }.sort_by(&:points).reverse
   end
 
   private
@@ -34,8 +34,8 @@ class TeamReportPresenter
   def timeline
     @_timeline ||= begin
       timeline = Hash.new.tap do |timeline|
-        team.identities.each do |identity|
-          identity.feeds.each do |feed|
+        team.users.each do |user|
+          user.feeds.each do |feed|
             feed.events.pluck(:created_at).each do |time|
               year, month = time.year, time.month
               timeline[year] = timeline.fetch(year, SortedSet.new).add(month)
@@ -52,11 +52,11 @@ class TeamReportPresenter
     end
   end
 
-  def member(identity, year, month = nil)
+  def member(user, year, month = nil)
     OpenStruct.new.tap do |member|
       member.points = begin
         time_range = ParseTimeRange.call(year, month)
-        feed = identity.feeds.where(year: year).first
+        feed = user.feeds.where(year: year).first
         if feed.blank?
           0
         else
@@ -66,8 +66,8 @@ class TeamReportPresenter
             .sum(:points)
         end
       end
-      member.nickname = identity.nickname
-      member.name = identity.name.present? ? identity.name : "&mdash;".html_safe
+      member.nickname = user.nickname
+      member.name = user.name.present? ? user.name : "&mdash;".html_safe
     end
   end
 end

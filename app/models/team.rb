@@ -3,10 +3,11 @@ class Team
   include Mongoid::Timestamps
 
   has_many :users, dependent: :destroy
-  embeds_one :settings, class_name: "TeamSettings", autobuild: true
 
   field :tid, type: String
   field :name, type: String
+  field :github_integration_enabled, type: Boolean, default: false
+  field :github_repositories, type: Array, default: []
 
   validates :tid, presence: true, uniqueness: true
   validates :name, presence: true

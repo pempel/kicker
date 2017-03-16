@@ -1,11 +1,12 @@
 describe Team do
   describe "#new" do
-    it "builds the new team with the default settings" do
+    it "builds the new team with the correct default values" do
       team = Team.new
 
-      expect(team.settings).to be_present
-      expect(team.settings.github_integration_enabled).to eq(false)
-      expect(team.settings.github_repositories).to eq([])
+      expect(team.tid).to eq(nil)
+      expect(team.name).to eq(nil)
+      expect(team.github_integration_enabled).to eq(false)
+      expect(team.github_repositories).to eq([])
     end
   end
 

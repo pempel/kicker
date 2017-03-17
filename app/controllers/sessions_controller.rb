@@ -14,13 +14,16 @@ class SessionsController < ApplicationController
   end
 
   get "/auth/slack/callback" do
-    info = request.env["omniauth.auth"].to_h["info"].to_h.deep_symbolize_keys
+    auth = request.env["omniauth.auth"].to_h.deep_symbolize_keys
+    info = auth[:info] || {}
+    credentials = auth[:credentials] || {}
     user = User.where(uid: info[:user_id]).first
     if user.blank?
       user = User.new
       user.team = Team.new(tid: info[:team_id], name: info[:team])
       user.identity = Identity.new
       user.uid = info[:user_id]
+      user.token = credentials[:token]
       user.nickname = info[:nickname]
       user.first_name = info[:first_name]
       user.last_name = info[:last_name]

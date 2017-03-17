@@ -33,12 +33,7 @@ namespace :db do
   task populate_for_last_year: :environment do
     Rake::Task["db:drop"].invoke
 
-    team = Team.create!(tid: "T1", name: "Team 1")
-    users = %w[john jack jane].map.with_index(1) do |nickname, index|
-      User.create!(team: team, uid: "U#{index}", nickname: nickname)
-    end
-
-    populate(Time.now.year, users)
+    create_events(Time.now.year, create_users)
   end
 
   desc "Populate the database with sample data for the last five years"
@@ -48,21 +43,21 @@ namespace :db do
     require "active_support/testing/time_helpers"
     include ActiveSupport::Testing::TimeHelpers
 
-    years = (4.years.ago.year..0.years.ago.year).to_a
+    users = travel_to(4.years.ago) { create_users }
 
-    users = travel_to(Time.new(years.first)) do
-      team = Team.create!(tid: "T1", name: "Team 1")
-      %w[john jack jane].map.with_index(1) do |nickname, index|
-        User.create!(team: team, uid: "U#{index}", nickname: nickname)
-      end
-    end
-
-    years.slice(0..-3).each do |year|
-      populate(year, users)
+    (4.years.ago.year..0.years.ago.year).to_a.slice(0..-3).each do |year|
+      create_events(year, users)
     end
   end
 
-  def populate(year, users)
+  def create_users
+    team = Team.create!(tid: "T1", name: "Team 1")
+    %w[john jack jane].map.with_index(1) do |nickname, i|
+      User.create!(team: team, uid: "U#{i}", token: "fake", nickname: nickname)
+    end
+  end
+
+  def create_events(year, users)
     rand(2..4).times do
       month = (year == Time.now.year) ? rand(1..Time.now.month) : rand(1..12)
       time = Time.new(year, month, Time.now.day, Time.now.hour)

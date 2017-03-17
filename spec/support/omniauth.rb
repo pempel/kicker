@@ -1,24 +1,25 @@
 module OmniAuthHelpers
-  def as_slack_user(uid, options = {})
-    hash = options.deep_symbolize_keys.merge(uid: uid)
+  def as_slack_user(auth = {})
+    auth = auth.deep_symbolize_keys
     OmniAuth.config.test_mode = true
     OmniAuth.config.mock_auth[:slack] = {
       "provider" => "slack",
-      "uid" => hash[:uid] || "U40XXX62X",
+      "uid" => auth[:uid] || "U40XXX62X",
       "info" => {
-        "nickname" => hash[:nickname] || "nickname",
+        "nickname" => auth[:nickname] || "nickname",
         "team" => "Team",
-        "user" => hash[:nickname] || "nickname",
+        "user" => auth[:nickname] || "nickname",
         "team_id" => "T40XX9X66",
-        "user_id" => hash[:uid] || "U40XXX62X",
-        "first_name" => hash[:first_name] || "First Name",
-        "last_name" => hash[:last_name] || "Last Name"
+        "user_id" => auth[:uid] || "U40XXX62X",
+        "first_name" => auth[:first_name] || "First Name",
+        "last_name" => auth[:last_name] || "Last Name"
+      },
+      "credentials" => {
+        "token" => auth[:token] || "xoxp-1574-1575"
       }
     }
-    if block_given?
-      yield
-      OmniAuth.config.mock_auth[:slack] = nil
-    end
+    yield
+    OmniAuth.config.mock_auth[:slack] = nil
   end
 end
 

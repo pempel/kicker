@@ -7,11 +7,13 @@ class User
   has_many :feeds, autosave: true, dependent: :destroy
 
   field :uid, type: String
+  field :token, type: String
   field :nickname, type: String
   field :first_name, type: String
   field :last_name, type: String
 
   validates :uid, presence: true, uniqueness: true
+  validates :token, presence: true
   validates :nickname, presence: true
 
   after_initialize :build_feed, if: :new_record?

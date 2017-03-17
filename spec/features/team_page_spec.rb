@@ -49,7 +49,7 @@ feature "Team page" do
   end
 
   scenario "contains a table of team members with points" do
-    as_slack_user("U1") { visit "/team?year=2017&month=2" }
+    as_slack_user(uid: "U1") { visit "/team?year=2017&month=2" }
 
     expect(page.all("table tbody td").map(&:text)).to eq([
       "3", "john", "John Doe",

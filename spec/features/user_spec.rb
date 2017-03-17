@@ -12,7 +12,7 @@ feature "User" do
   scenario "visits the team page after she has signed in successfully" do
     create(:user, uid: "U1", nickname: "jane")
 
-    as_slack_user("U1") { visit "/team" }
+    as_slack_user(uid: "U1") { visit "/team" }
     visit "/team"
 
     expect(page).to have_current_path("/team?year=#{Time.now.year}")
@@ -24,7 +24,7 @@ feature "User" do
     identity.users << create(:user, uid: "U1", nickname: "jane")
     identity.users << create(:user, uid: "U2", nickname: "june")
 
-    as_slack_user("U1") { visit "/team" }
+    as_slack_user(uid: "U1") { visit "/team" }
 
     expect(page).to have_current_path("/team?year=#{Time.now.year}")
     expect(page).to have_text("Keep calm and carry on, jane")
@@ -34,18 +34,24 @@ feature "User" do
     expect(page).to have_current_path("/")
     expect(page).to have_text("Keep calm and carry on")
 
-    as_slack_user("U2") { visit "/team" }
+    as_slack_user(uid: "U2") { visit "/team" }
 
     expect(page).to have_current_path("/team?year=#{Time.now.year}")
     expect(page).to have_text("Keep calm and carry on, june")
+  end
+
+  scenario "gets a token after sign up" do
+    as_slack_user(token: "token-1-2-3") { visit "/team" }
+
+    expect(User.first.token).to eq("token-1-2-3")
   end
 
   scenario "merges one account with another" do
     jane = create(:user, uid: "U1", nickname: "jane")
     jane_identity_id = jane.identity.id
 
-    as_slack_user("U1") { visit "/team" }
-    as_slack_user("U2", nickname: "june") { visit "/signin" }
+    as_slack_user(uid: "U1") { visit "/team" }
+    as_slack_user(uid: "U2", nickname: "june") { visit "/signin" }
 
     expect(page).to have_current_path("/team?year=#{Time.now.year}")
     expect(page).to have_text("Keep calm and carry on, june")

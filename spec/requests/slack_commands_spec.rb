@@ -1,6 +1,6 @@
 require "request_helper"
 
-describe "POST /slack/commands/proud_of" do
+xdescribe "POST /slack/commands/proud_of" do
   context "when the request is the verification of the SSL certificate" do
     before do
       post "/slack/commands/proud_of", {ssl_check: 1}

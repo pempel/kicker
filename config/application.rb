@@ -2,6 +2,7 @@ require "bundler/setup"
 require "mongoid"
 require "sinatra/base"
 require "sinatra/reloader"
+require "sinatra/content_for"
 
 Bundler.require(:default)
 Bundler.require(Sinatra::Base.environment)
@@ -32,6 +33,7 @@ class Kicker
   def initialize
     @app = Rack::Builder.app do
       use SessionsController
+      use SettingsController
       use SlackController
       use TeamsController
       run WelcomeController

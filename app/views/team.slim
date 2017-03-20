@@ -1,58 +1,45 @@
-.jumbotron
-  .container
-    .row
-      .col-md-4.col-md-offset-1
-        h1 kicker
-        p Keep calm and carry on, #{current_user.nickname}.
-    .row
-      .col-md-10.col-md-offset-1
-        p
-          a.btn.btn-primary href="/signout" Sign out
-
-.container
-  .row
-    .col-md-10.col-md-offset-1
-      ul.nav.nav-pills.timeline
-        - if @report.years.size == 1
-          li.active
-            - year = @report.years.first
+.btn-toolbar
+  .btn-group
+    - if @report.years.size == 1
+      - text = @report.label(@report.years.first)
+      - path = team_path(year: @report.years.first)
+      - active = path == current_path
+      a.btn.btn-default class=("active" if active) href=(path) = text
+    - else
+      - text = @report.label(@year)
+      - path = team_path(year: @year)
+      - active = path == current_path
+      button.btn.btn-default.dropdown-toggle class=("active" if active) data-toggle="dropdown"
+        = text + " "
+        span.caret
+      ul.dropdown-menu
+        - @report.years.each do |year|
+          - disabled = @report.active_years.exclude?(year)
+          li class=("disabled" if disabled)
+            - text = @report.label(year)
             - path = team_path(year: year)
-            a href=(path) = @report.label(year)
-        - else
-          li.active.dropdown
-            a.dropdown-toggle#year-toggle(
-              data-toggle="dropdown"
-              role="button"
-              aria-haspopup="true"
-              aria-expanded="false"
-            )
-              = "#{@report.label(@year)} "
-              span.caret
-            ul.dropdown-menu aria-labelledby="year-toggle"
-              - @report.years.each do |year|
-                - disabled = @report.active_years.exclude?(year)
-                - path = team_path(year: year)
-                li class=("disabled" if disabled)
-                  a href=(path unless disabled) = @report.label(year)
+            a href=(path) = text
+  .btn-group
+    - @report.months.each do |month|
+      - text = @report.label(@year, month)
+      - path = team_path(year: @year, month: month)
+      - active = current_path == path
+      - disabled = @report.active_months(@year).exclude?(month)
+      a.btn.btn-default(
+        class=("disabled" if disabled)
+        class=("active" if active)
+        href=(path)
+      ) = text
 
-        - @report.months.each do |month|
-          - disabled = @report.active_months(@year).exclude?(month)
-          - path = team_path(year: @year, month: month)
-          li(
-            class=("disabled" if disabled)
-            class=("active" if current_path == path)
-          )
-            a href=(path) = @report.label(@year, month)
-
-      table.table.table-hover
-        thead
-          tr
-            th Points
-            th Nickname
-            th Name
-        tbody
-          - @report.members(@year, @month).each do |member|
-            tr
-              td = member.points
-              td = member.nickname
-              td = member.name
+table.table.table-hover
+  thead
+    tr
+      th Points
+      th Nickname
+      th Name
+  tbody
+    - @report.members(@year, @month).each do |member|
+      tr
+        td = member.points
+        td = member.nickname
+        td = member.name

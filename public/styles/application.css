@@ -1,10 +1,19 @@
-.nav > li.disabled > a,
-.nav > li.disabled > a:hover {
-  color: #cccccc;
+.nav {
+  margin-bottom: 30px;
 }
 
-.nav > li.disabled > a:hover {
-  cursor: default;
+.btn-toolbar {
+  margin-bottom: 15px;
+}
+
+.btn-toolbar > .btn-group {
+  margin-left: 0px;
+  margin-right: 15px;
+  margin-bottom: 15px;
+}
+
+a.disabled {
+  color: #cccccc;
 }
 
 .dropdown-menu > li.disabled > a,
@@ -14,8 +23,4 @@
 
 .dropdown-menu > li.disabled > a:hover {
   cursor: default;
-}
-
-.timeline {
-  margin-bottom: 30px;
 }

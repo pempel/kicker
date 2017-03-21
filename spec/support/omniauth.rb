@@ -4,15 +4,16 @@ module OmniAuthHelpers
     OmniAuth.config.test_mode = true
     OmniAuth.config.mock_auth[:slack] = {
       "provider" => "slack",
-      "uid" => auth[:uid] || "U40XXX62X",
+      "uid" => auth[:uid] || "U1",
       "info" => {
         "nickname" => auth[:nickname] || "nickname",
-        "team" => "Team",
+        "team" => "Team 1",
         "user" => auth[:nickname] || "nickname",
-        "team_id" => auth[:tid] || "T40XX9X66",
-        "user_id" => auth[:uid] || "U40XXX62X",
+        "team_id" => auth[:tid] || "T1",
+        "user_id" => auth[:uid] || "U1",
         "first_name" => auth[:first_name] || "First Name",
-        "last_name" => auth[:last_name] || "Last Name"
+        "last_name" => auth[:last_name] || "Last Name",
+        "team_domain" => (auth[:team_domain] || auth[:tid] || "T1").downcase
       },
       "credentials" => {
         "token" => auth[:token] || "xoxp-1574-1575"

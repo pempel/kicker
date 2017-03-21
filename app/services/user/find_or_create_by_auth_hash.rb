@@ -9,8 +9,7 @@ class User::FindOrCreateByAuthHash < ApplicationService
     user = User.where(uid: info[:user_id]).first
     if user.blank?
       user = User.new
-      user.team = Team.where(tid: info[:team_id]).first
-      user.team ||= Team.new(tid: info[:team_id], name: info[:team])
+      user.team = team || new_team
       user.identity = Identity.new
       user.uid = info[:user_id]
       user.token = token
@@ -25,4 +24,12 @@ class User::FindOrCreateByAuthHash < ApplicationService
   private
 
   attr_reader :info, :token
+
+  def team
+    Team.where(tid: info[:team_id]).first
+  end
+
+  def new_team
+    Team.new(tid: info[:team_id], name: info[:team], domain: info[:team_domain])
+  end
 end

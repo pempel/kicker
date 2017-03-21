@@ -46,8 +46,8 @@ describe User do
   end
 
   describe "#name" do
-    context "when the first name and the last name are not blank" do
-      it "returns the name" do
+    context "when the first name and the last name are present" do
+      it "returns the correct name" do
         user = build(:user, first_name: "First", last_name: "Last")
 
         expect(user.name).to eq("First Last")
@@ -55,7 +55,7 @@ describe User do
     end
 
     context "when the first name and the last name are blank" do
-      it "returns the name" do
+      it "returns the correct name" do
         user = build(:user, first_name: nil, last_name: nil)
 
         expect(user.name).to eq("")
@@ -63,7 +63,7 @@ describe User do
     end
 
     context "when the first name is blank" do
-      it "returns the name" do
+      it "returns the correct name" do
         user = build(:user, first_name: nil, last_name: "Last")
 
         expect(user.name).to eq("Last")
@@ -71,7 +71,7 @@ describe User do
     end
 
     context "when the last name is blank" do
-      it "returns the name" do
+      it "returns the correct name" do
         user = build(:user, first_name: "First", last_name: nil)
 
         expect(user.name).to eq("First")

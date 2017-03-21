@@ -14,7 +14,7 @@ class ApplicationController < Sinatra::Base
     client_secret = ENV["SLACK_CLIENT_SECRET"]
     client_options = {
       provider_ignores_state: true,
-      scope: "reactions:read users:read"
+      scope: "reactions:read team:read users:read"
     }
     provider :slack, client_id, client_secret, client_options
   end

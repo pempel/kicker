@@ -38,31 +38,57 @@ describe "POST /slack/events" do
         expect(last_response.body).to eq("")
       end
 
-      it "assigns the new nickname to the user#nickname" do
+      it "sets the new nickname of the user" do
         expect(user.reload.nickname).to eq("new-nickname")
       end
 
-      it "assigns the new first name to the user#first_name" do
+      it "sets the new first name of the user" do
         expect(user.reload.first_name).to eq("New First Name")
       end
 
-      it "assigns the new last name to the user#last_name" do
+      it "sets the new last name of the user" do
         expect(user.reload.last_name).to eq("")
       end
     end
-  end
 
-  context "when the event type is something else" do
-    before do
-      post "/slack/events", {token: "token-1", challenge: "challenge-1"}.to_json, {"CONTENT_TYPE" => "application/json"}
+    context "when the event type is \"team_rename\"" do
+      let!(:team) do
+        create(:team, tid: "T1", name: "Team 1")
+      end
+
+      let(:params) do
+        build(:team_rename_event_hash, team_id: "T1", name: "New Team 1")
+      end
+
+      before do
+        post "/slack/events", params.to_json, {"CONTENT_TYPE" => "application/json"}
+      end
+
+      it "responds with the 200 status code" do
+        expect(last_response.status).to eq(200)
+      end
+
+      it "responds with the empty body" do
+        expect(last_response.body).to eq("")
+      end
+
+      it "sets the new name of the team" do
+        expect(team.reload.name).to eq("New Team 1")
+      end
     end
 
-    it "responds with the 200 status code" do
-      expect(last_response.status).to eq(200)
-    end
+    context "when the event type is something else" do
+      before do
+        post "/slack/events", {token: "token-1", challenge: "challenge-1"}.to_json, {"CONTENT_TYPE" => "application/json"}
+      end
 
-    it "responds with the empty body" do
-      expect(last_response.body).to eq("")
+      it "responds with the 200 status code" do
+        expect(last_response.status).to eq(200)
+      end
+
+      it "responds with the empty body" do
+        expect(last_response.body).to eq("")
+      end
     end
   end
 end

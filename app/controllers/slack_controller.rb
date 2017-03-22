@@ -5,25 +5,7 @@ class SlackController < ApplicationController
       headers "Content-Type" => "application/x-www-form-urlencoded"
       body params[:challenge]
     when "event_callback"
-      event_params = params.fetch(:event, {})
-      user_params = event_params.fetch(:user, {})
-      user_profile_params = user_params.fetch(:profile, {})
-
-      event_type = event_params[:type]
-      uid = user_params[:id]
-      nickname = user_params[:name]
-      first_name = user_profile_params[:first_name]
-      last_name = user_profile_params[:last_name]
-
-      if event_type == "user_change"
-        user = User.where(uid: uid).first
-        if user.present?
-          user.nickname = nickname
-          user.first_name = first_name
-          user.last_name = last_name
-          user.save!
-        end
-      end
+      HandleSlackEvent.call(params)
     end
   end
 

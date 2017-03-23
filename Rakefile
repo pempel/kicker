@@ -16,7 +16,9 @@ namespace :factory_girl do
   task lint: "environment:test" do
     begin
       DatabaseCleaner.start
-      FactoryGirl.lint(traits: true)
+      factories = FactoryGirl.factories
+      factories_to_lint = factories.reject { |f| f.name =~ /_hash$/ }
+      FactoryGirl.lint(factories_to_lint, traits: true)
     ensure
       DatabaseCleaner.clean
     end

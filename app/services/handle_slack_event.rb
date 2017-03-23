@@ -13,6 +13,24 @@ class HandleSlackEvent < ApplicationService
 
   attr_reader :params, :event_params
 
+  def team_domain_change
+    domain = event_params[:domain]
+    team = Team.where(tid: params[:team_id]).first
+    if domain.present? && team.present?
+      team.domain = domain
+      team.save!
+    end
+  end
+
+  def team_rename
+    name = event_params[:name]
+    team = Team.where(tid: params[:team_id]).first
+    if name.present? && team.present?
+      team.name = name
+      team.save!
+    end
+  end
+
   def user_change
     user_params = event_params.fetch(:user, {})
     user_profile_params = user_params.fetch(:profile, {})
@@ -28,15 +46,6 @@ class HandleSlackEvent < ApplicationService
       user.first_name = first_name
       user.last_name = last_name
       user.save!
-    end
-  end
-
-  def team_rename
-    name = event_params[:name]
-    team = Team.where(tid: params[:team_id]).first
-    if name.present? && team.present?
-      team.name = name
-      team.save!
     end
   end
 end

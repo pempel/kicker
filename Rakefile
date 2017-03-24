@@ -53,7 +53,7 @@ namespace :db do
   end
 
   def create_users
-    team = Team.create!(tid: "T1", name: "Team 1")
+    team = Team.create!(tid: "T1", name: "Team 1", domain: "team-1")
     %w[john jack jane].map.with_index(1) do |nickname, i|
       User.create!(team: team, uid: "U#{i}", token: "fake", nickname: nickname)
     end

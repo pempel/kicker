@@ -4,6 +4,7 @@ ruby "2.3.1"
 
 gem "mongoid"
 gem "omniauth-slack"
+gem "rack_csrf"
 gem "rake"
 gem "sinatra"
 gem "sinatra-contrib", require: false

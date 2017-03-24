@@ -4,14 +4,17 @@ class ApplicationController < Sinatra::Base
 
   register ApplicationConditions
 
+  enable :sessions
+  set :session_secret, ENV.fetch("SESSION_SECRET")
   set :public_folder, File.expand_path("../../../public", __FILE__)
   set :views, File.expand_path("../../views", __FILE__)
+  set :current_fake_user, nil
 
-  enable :sessions
-
+  use Rack::MethodOverride
+  use Rack::Csrf, skip: ["POST:/slack/events"]
   use OmniAuth::Builder do
-    client_id = ENV["SLACK_CLIENT_ID"]
-    client_secret = ENV["SLACK_CLIENT_SECRET"]
+    client_id = ENV.fetch("SLACK_CLIENT_ID")
+    client_secret = ENV.fetch("SLACK_CLIENT_SECRET")
     client_options = {
       provider_ignores_state: true,
       scope: "reactions:read team:read users:read"
@@ -24,14 +27,9 @@ class ApplicationController < Sinatra::Base
       request.body.rewind
       @params = JSON.parse(request.body.read.to_s)
     end
-    @params = params.deep_symbolize_keys
   end
 
-  configure do
-    set :current_fake_user, nil
-  end
-
-  configure :development do
+  configure :development, :fake do
     register Sinatra::Reloader
   end
 

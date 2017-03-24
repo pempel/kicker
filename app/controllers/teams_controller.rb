@@ -1,8 +1,9 @@
 class TeamsController < ApplicationController
   get "/team", auth: true do
-    year, month, changed = ParseYearAndMonth.call(params[:year], params[:month])
+    year, month = params["year"], params["month"]
+    year, month, changed = ParseYearAndMonth.call(year, month)
     if changed
-      redirect team_path(year: year, month: month)
+      redirect to(team_path(year: year, month: month))
     else
       @year = year
       @month = month

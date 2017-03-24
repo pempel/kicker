@@ -1,7 +1,7 @@
 class HandleSlackEvent < ApplicationService
   def initialize(params)
     @params = params.to_h.deep_symbolize_keys
-    @event_params = params.fetch(:event, {})
+    @event_params = @params.fetch(:event, {})
   end
 
   def call

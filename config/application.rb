@@ -1,5 +1,6 @@
 require "bundler/setup"
 require "mongoid"
+require "rack/csrf"
 require "sinatra/base"
 require "sinatra/reloader"
 require "sinatra/content_for"

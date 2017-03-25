@@ -1,6 +1,6 @@
 require "feature_helper"
 
-feature "Team page" do
+feature "User visits a team overview dashboard" do
   let(:now) do
     Time.parse("2017-02-26 10:15")
   end
@@ -48,8 +48,10 @@ feature "Team page" do
     create(:user, team: team_2, uid: "U4", nickname: "june")
   end
 
-  scenario "contains a table of team members with points" do
-    as_slack_user(uid: "U1") { visit "/team?year=2017&month=2" }
+  scenario "they see a table of team members with points" do
+    as_slack_user(uid: "U1") do
+      visit "/dashboard?type=overview&tid=T1&year=2017&month=2"
+    end
 
     expect(page.all("table tbody td").map(&:text)).to eq([
       "3", "john", "John Doe",

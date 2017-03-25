@@ -1,0 +1,14 @@
+== slim :"dashboard/_menu"
+
+table.table.table-hover
+  thead
+    tr
+      th Points
+      th Nickname
+      th Name
+  tbody
+    - @dashboard.members.each do |member|
+      tr
+        td = member.points
+        td = member.nickname
+        td = member.name.present? ? member.name : "&mdash;".html_safe

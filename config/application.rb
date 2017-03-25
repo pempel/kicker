@@ -14,8 +14,8 @@ paths = [
   "app/validators/**/*.rb",
   "app/models/event.rb",
   "app/models/event/base.rb",
+  "app/models/dashboard.rb",
   "app/models/**/*.rb",
-  "app/presenters/**/*.rb",
   "app/services/application_service.rb",
   "app/services/**/*.rb",
   "app/helpers/**/*.rb",
@@ -33,10 +33,10 @@ class Kicker
 
   def initialize
     @app = Rack::Builder.app do
+      use DashboardController
       use SessionsController
       use SettingsController
       use SlackController
-      use TeamsController
       run WelcomeController
     end
   end

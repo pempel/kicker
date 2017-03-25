@@ -4,6 +4,7 @@
     - path = "/settings/user"
     - active = current_path.start_with?(path)
     a.btn.btn-default class=("active" if active) href=(path) = text
+
     - teams.each do |team|
       - text = team.name
       - path = "/settings/teams/#{team.domain}"

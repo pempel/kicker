@@ -33,18 +33,27 @@ html lang="en"
           .col-md-10.col-md-offset-1
             p
               - if content_for?(:actions)
-                == yield_content :actions
+                == yield_content(:actions)
               - else
                 - if current_user.present?
-                  a.btn.btn-primary href="/signout" Sign out
+                  - if current_path == "/"
+                    a.btn.btn-primary href=(main_dashboard_path) Carry on
+                  - else
+                    a.btn.btn-primary href="/signout" Sign out
                 - else
                   a.btn.btn-primary href="/signin" Sign in with Slack
 
     .container
       .row
         .col-md-10.col-md-offset-1
-          - if current_user.present?
-            == slim :"partials/navigation"
+          - if current_user.present? && current_path != "/"
+            ul.nav.nav-tabs
+              li class=("active" if current_path.start_with?("/dashboard"))
+                a href=(main_dashboard_path)
+                  | Dashboard
+              li class=("active" if current_path.start_with?("/settings"))
+                a href="/settings/user"
+                  | Settings
 
           == yield
 

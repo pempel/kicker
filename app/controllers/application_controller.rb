@@ -1,6 +1,8 @@
 class ApplicationController < Sinatra::Base
   helpers Sinatra::ContentFor
-  helpers ApplicationHelpers
+  helpers HtmlHelpers
+  helpers SessionHelpers
+  helpers UrlHelpers
 
   register ApplicationConditions
 
@@ -35,5 +37,10 @@ class ApplicationController < Sinatra::Base
 
   configure :fake do
     set :current_fake_user, User.where(uid: "U1").first
+  end
+
+  not_found do
+    status 404
+    body "PAGE NOT FOUND."
   end
 end

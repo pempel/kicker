@@ -5,9 +5,10 @@ class SessionsController < ApplicationController
   end
 
   get "/signin" do
-    if settings.current_fake_user.present?
-      set_current_user(settings.current_fake_user)
-      redirect to(team_path)
+    user = settings.current_fake_user
+    if user.present?
+      set_current_user(user)
+      redirect to(main_dashboard_path)
     else
       redirect to("/auth/slack")
     end
@@ -21,6 +22,6 @@ class SessionsController < ApplicationController
       user.save && Identity.where(id: user_identity_id).delete
     end
     set_current_user(user)
-    redirect to(previous_path || team_path)
+    redirect to(previous_path || main_dashboard_path)
   end
 end

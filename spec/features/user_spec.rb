@@ -9,13 +9,12 @@ feature "User" do
     expect(page).to have_link("Sign in", href: "/signin")
   end
 
-  scenario "visits the team page after she has signed in successfully" do
+  scenario "visits the dashboard page after she has signed in successfully" do
     create(:user, uid: "U1", nickname: "jane")
 
-    as_slack_user(uid: "U1") { visit "/team" }
-    visit "/team"
+    as_slack_user(uid: "U1") { visit "/dashboard" }
+    visit "/dashboard"
 
-    expect(page).to have_current_path("/team?year=#{Time.now.year}")
     expect(page).to have_text("Keep calm and carry on, jane")
   end
 
@@ -24,9 +23,8 @@ feature "User" do
     identity.users << create(:user, uid: "U1", nickname: "jane")
     identity.users << create(:user, uid: "U2", nickname: "june")
 
-    as_slack_user(uid: "U1") { visit "/team" }
+    as_slack_user(uid: "U1") { visit "/dashboard" }
 
-    expect(page).to have_current_path("/team?year=#{Time.now.year}")
     expect(page).to have_text("Keep calm and carry on, jane")
 
     visit "/signout"
@@ -34,14 +32,13 @@ feature "User" do
     expect(page).to have_current_path("/")
     expect(page).to have_text("Keep calm and carry on")
 
-    as_slack_user(uid: "U2") { visit "/team" }
+    as_slack_user(uid: "U2") { visit "/dashboard" }
 
-    expect(page).to have_current_path("/team?year=#{Time.now.year}")
     expect(page).to have_text("Keep calm and carry on, june")
   end
 
   scenario "gets a token after sign up" do
-    as_slack_user(token: "token-1-2-3") { visit "/team" }
+    as_slack_user(token: "token-1-2-3") { visit "/dashboard" }
 
     expect(User.first.token).to eq("token-1-2-3")
   end
@@ -50,10 +47,9 @@ feature "User" do
     jane = create(:user, uid: "U1", nickname: "jane")
     jane_identity_id = jane.identity.id
 
-    as_slack_user(uid: "U1") { visit "/team" }
+    as_slack_user(uid: "U1") { visit "/dashboard" }
     as_slack_user(uid: "U2", nickname: "june") { visit "/signin" }
 
-    expect(page).to have_current_path("/team?year=#{Time.now.year}")
     expect(page).to have_text("Keep calm and carry on, june")
     expect(Identity.count).to eq(1)
     expect(Identity.first.id.to_s).to eq(jane_identity_id.to_s)

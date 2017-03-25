@@ -1,0 +1,44 @@
+.btn-toolbar
+  .btn-group
+    == link_group do |g|
+      - @dashboard.filters.by_types.each do |f|
+        - g.link do |l|
+          - l.text = f.text
+          - l.path = dashboard_path(current_params.merge(f.param))
+          - l.active = f.selected
+          - l.selected = f.selected
+          - l.disabled = f.disabled
+
+  .btn-group
+    == link_dropdown do |d|
+      - @dashboard.filters.by_teams.each do |f|
+        - d.link do |l|
+          - l.text = f.text
+          - l.path = dashboard_path(current_params.merge(f.param))
+          - l.selected = f.selected
+          - l.disabled = f.disabled
+
+    == link_dropdown do |d|
+      - @dashboard.filters.by_users.each do |f|
+        - d.link do |l|
+          - l.text = f.text
+          - l.path = dashboard_path(current_params.merge(f.param))
+          - l.selected = f.selected
+          - l.disabled = f.disabled
+
+  .btn-group
+    == link_dropdown do |d|
+      - @dashboard.filters.by_years.each do |f|
+        - d.link do |l|
+          - l.text = f.text
+          - l.path = dashboard_path(current_params.merge(f.param))
+          - l.selected = f.selected
+          - l.disabled = f.disabled
+
+    == link_dropdown do |d|
+      - @dashboard.filters.by_months.each do |f|
+        - d.link do |l|
+          - l.text = f.text
+          - l.path = dashboard_path(current_params.merge(f.param))
+          - l.selected = f.selected
+          - l.disabled = f.disabled

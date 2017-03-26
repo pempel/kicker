@@ -32,16 +32,13 @@ html lang="en"
         .row
           .col-md-10.col-md-offset-1
             p
-              - if content_for?(:actions)
-                == yield_content(:actions)
-              - else
-                - if current_user.present?
-                  - if current_path == "/"
-                    a.btn.btn-primary href=(main_dashboard_path) Carry on
-                  - else
-                    a.btn.btn-primary href="/signout" Sign out
+              - if current_user.present?
+                - if current_path == "/"
+                  a.btn.btn-primary href=(main_dashboard_path) Carry on
                 - else
-                  a.btn.btn-primary href="/signin" Sign in with Slack
+                  a.btn.btn-primary href="/signout" Sign out
+              - else
+                a.btn.btn-primary href="/signin" Sign in with Slack
 
     .container
       .row

@@ -2,6 +2,7 @@ source "https://rubygems.org"
 
 ruby "2.3.1"
 
+gem "gemoji"
 gem "mongoid"
 gem "omniauth-slack"
 gem "rack_csrf"

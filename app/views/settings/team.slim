@@ -7,14 +7,14 @@ form.form-inline method="post" action="/settings/teams/#{@team.domain}"
   input type="hidden" name="_method" value="patch"
 
   p
-    ' When your work is recognized, then you earn
-    - name = "settings[points_for_work_recognized_event]"
-    - value = @team.points_for_work_recognized_event
-    select.form-control name=(name)
-      option value="1" selected=(value == 1) 1 point
-      option value="2" selected=(value == 2) 2 points
-      option value="3" selected=(value == 3) 3 points
-      option value="4" selected=(value == 4) 4 points
-      option value="5" selected=(value == 5) 5 points
+    ' When your co-worker adds #{@team.reaction_emoji_unicode}
+      as a reaction to your message, then you earn
+
+    select.form-control name="settings[reaction_points]"
+      option value="1" selected=(@team.reaction_points == 1) 1 point
+      option value="2" selected=(@team.reaction_points == 2) 2 points
+      option value="3" selected=(@team.reaction_points == 3) 3 points
+      option value="4" selected=(@team.reaction_points == 4) 4 points
+      option value="5" selected=(@team.reaction_points == 5) 5 points
 
   button.btn.btn-default type="submit" Save

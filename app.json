@@ -22,6 +22,13 @@
       "description": "The current environment.",
       "value": "production"
     },
+    "REACTION_EMOJI": {
+      "description": "The reaction to your message that gives you points",
+      "value": "+1"
+    },
+    "SESSION_SECRET": {
+      "description": "The session data in the cookie is signed with a session secret."
+    },
     "SLACK_CLIENT_ID": {
       "description": "Your Slack App's Client ID."
     },

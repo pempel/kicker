@@ -15,7 +15,7 @@ class SettingsController < ApplicationController
     team = Team.where(domain: domain).first
     if team.present?
       settings = params["settings"].to_h
-      team.update!(settings.select { |k, v| k =~ /^points_/ })
+      team.update!(settings.slice("reaction_points"))
     end
     redirect to("/settings/teams/#{domain}")
   end
